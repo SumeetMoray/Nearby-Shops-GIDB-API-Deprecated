@@ -40,9 +40,9 @@ public class Staff {
 //    public static final String APPROVE_ITEM_CATEGORY_SUBMISSIONS = "APPROVE_ITEM_CATEGORY_SUBMISSIONS";
 //    public static final String APPROVE_ITEM_SUBMISSIONS = "APPROVE_ITEM_SUBMISSIONS";
 
-    public static final String APPROVE_SHOP_ADMIN_ACCOUNTS = "APPROVE_SHOP_ADMIN_ACCOUNTS";
-    public static final String APPROVE_SHOPS = "APPROVE_SHOPS";
-    public static final String APPROVE_END_USER_ACCOUNTS = "APPROVE_END_USER_ACCOUNTS";
+//    public static final String APPROVE_SHOP_ADMIN_ACCOUNTS = "APPROVE_SHOP_ADMIN_ACCOUNTS";
+//    public static final String APPROVE_SHOPS = "APPROVE_SHOPS";
+//    public static final String APPROVE_END_USER_ACCOUNTS = "APPROVE_END_USER_ACCOUNTS";
 
 
 
@@ -75,9 +75,9 @@ public class Staff {
 
             + " " + Staff.CREATE_UPDATE_ITEM_CATEGORY + " boolean ,"
             + " " + Staff.CREATE_UPDATE_ITEMS + " boolean ,"
-            + " " + Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + " boolean ,"
-            + " " + Staff.APPROVE_SHOPS + " boolean ,"
-            + " " + Staff.APPROVE_END_USER_ACCOUNTS + " boolean ,"
+//            + " " + Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + " boolean ,"
+//            + " " + Staff.APPROVE_SHOPS + " boolean ,"
+//            + " " + Staff.APPROVE_END_USER_ACCOUNTS + " boolean ,"
             + " FOREIGN KEY(" + Staff.STAFF_ID +") REFERENCES " + Usernames.TABLE_NAME + "(" + Usernames.USER_ID + ")"
             + ")";
 
@@ -106,9 +106,10 @@ public class Staff {
     // permission fields
     private boolean createUpdateItemCategory;
     private boolean createUpdateItems;
-    private boolean approveShopAdminAccounts;
-    private boolean approveShops;
-    private boolean approveEndUserAccounts;
+
+//    private boolean approveShopAdminAccounts;
+//    private boolean approveShops;
+//    private boolean approveEndUserAccounts;
 
 
 
@@ -139,29 +140,6 @@ public class Staff {
         this.createUpdateItems = createUpdateItems;
     }
 
-    public boolean isApproveShopAdminAccounts() {
-        return approveShopAdminAccounts;
-    }
-
-    public void setApproveShopAdminAccounts(boolean approveShopAdminAccounts) {
-        this.approveShopAdminAccounts = approveShopAdminAccounts;
-    }
-
-    public boolean isApproveShops() {
-        return approveShops;
-    }
-
-    public void setApproveShops(boolean approveShops) {
-        this.approveShops = approveShops;
-    }
-
-    public boolean isApproveEndUserAccounts() {
-        return approveEndUserAccounts;
-    }
-
-    public void setApproveEndUserAccounts(boolean approveEndUserAccounts) {
-        this.approveEndUserAccounts = approveEndUserAccounts;
-    }
 
 
     public String getPhone() {

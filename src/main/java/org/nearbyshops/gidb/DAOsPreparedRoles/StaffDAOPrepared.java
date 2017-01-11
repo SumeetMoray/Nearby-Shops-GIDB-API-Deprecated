@@ -60,11 +60,11 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NUMBER + ","
 
 				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ","
-				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-				+ Staff.APPROVE_SHOPS + ","
-				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
-				+ ") VALUES(?,?,? ,?,? ,?,?,?,? ,?,? ,?,?,?,?,?)";
+				+ Staff.CREATE_UPDATE_ITEMS + ""
+//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
+//				+ Staff.APPROVE_SHOPS + ","
+//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
+				+ ") VALUES(?,?,? ,?,? ,?,?,?,? ,?,? ,?,?)";
 
 		try {
 
@@ -108,9 +108,9 @@ public class StaffDAOPrepared {
 
 			statement.setObject(++i,staff.isCreateUpdateItemCategory());
 			statement.setObject(++i,staff.isCreateUpdateItems());
-			statement.setObject(++i,staff.isApproveShopAdminAccounts());
-			statement.setObject(++i,staff.isApproveShops());
-			statement.setObject(++i,staff.isApproveEndUserAccounts());
+//			statement.setObject(++i,staff.isApproveShopAdminAccounts());
+//			statement.setObject(++i,staff.isApproveShops());
+//			statement.setObject(++i,staff.isApproveEndUserAccounts());
 
 
 			statement.executeUpdate();
@@ -203,10 +203,10 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NUMBER + "=?,"
 
 				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + "=?,"
-				+ Staff.CREATE_UPDATE_ITEMS + "=?,"
-				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + "=?,"
-				+ Staff.APPROVE_SHOPS + "=?,"
-				+ Staff.APPROVE_END_USER_ACCOUNTS + "=?"
+				+ Staff.CREATE_UPDATE_ITEMS + "=?"
+//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + "=?,"
+//				+ Staff.APPROVE_SHOPS + "=?,"
+//				+ Staff.APPROVE_END_USER_ACCOUNTS + "=?"
 
 				+ " WHERE " + Staff.STAFF_ID + " = ?";
 
@@ -249,9 +249,9 @@ public class StaffDAOPrepared {
 
 			statement.setObject(++i,staff.isCreateUpdateItemCategory());
 			statement.setObject(++i,staff.isCreateUpdateItems());
-			statement.setObject(++i,staff.isApproveShopAdminAccounts());
-			statement.setObject(++i,staff.isApproveShops());
-			statement.setObject(++i,staff.isApproveEndUserAccounts());
+//			statement.setObject(++i,staff.isApproveShopAdminAccounts());
+//			statement.setObject(++i,staff.isApproveShops());
+//			statement.setObject(++i,staff.isApproveEndUserAccounts());
 
 			statement.setObject(++i,staff.getUserID());
 
@@ -568,12 +568,12 @@ public class StaffDAOPrepared {
 				+ Staff.TIMESTAMP_CREATED + ","
 
 				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ","
-				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-				+ Staff.APPROVE_SHOPS + ","
-				+ Staff.APPROVE_END_USER_ACCOUNTS + "" +
+				+ Staff.CREATE_UPDATE_ITEMS + ""
+//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
+//				+ Staff.APPROVE_SHOPS + ","
+//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
 
-				" FROM " + Staff.TABLE_NAME +
+				+ " FROM " + Staff.TABLE_NAME +
 				" INNER JOIN " + Usernames.TABLE_NAME + " ON (" + Staff.STAFF_ID + " = " + Usernames.USER_ID + ")";
 
 
@@ -634,9 +634,9 @@ public class StaffDAOPrepared {
 
 				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
 				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
+//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
+//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
 
 				staffList.add(staff);
 			}
@@ -709,10 +709,10 @@ public class StaffDAOPrepared {
 				+ Staff.TIMESTAMP_CREATED + ","
 
 				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ","
-				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-				+ Staff.APPROVE_SHOPS + ","
-				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
+				+ Staff.CREATE_UPDATE_ITEMS + ""
+//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
+//				+ Staff.APPROVE_SHOPS + ","
+//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
 
 				+ " FROM " + Staff.TABLE_NAME
 				+ " INNER JOIN " + Usernames.TABLE_NAME + " ON (" + Staff.STAFF_ID + " = " + Usernames.USER_ID + ")"
@@ -760,9 +760,9 @@ public class StaffDAOPrepared {
 
 				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
 				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
+//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
+//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
 			}
 
 
@@ -907,12 +907,12 @@ public class StaffDAOPrepared {
 						+ Staff.IS_ENABLED  + ","
 
 						+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-						+ Staff.CREATE_UPDATE_ITEMS + ","
-						+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-						+ Staff.APPROVE_SHOPS + ","
-						+ Staff.APPROVE_END_USER_ACCOUNTS + "" +
+						+ Staff.CREATE_UPDATE_ITEMS + ""
+//						+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
+//						+ Staff.APPROVE_SHOPS + ","
+//						+ Staff.APPROVE_END_USER_ACCOUNTS + "" +
 
-						" FROM " + Staff.TABLE_NAME +
+						+ " FROM " + Staff.TABLE_NAME +
 						" INNER JOIN " + Usernames.TABLE_NAME +
 						" ON ( " + Usernames.USER_ID + " = " + Staff.STAFF_ID + ")";
 
@@ -991,9 +991,9 @@ public class StaffDAOPrepared {
 
 				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
 				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
+//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
+//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
 
 			}
 
