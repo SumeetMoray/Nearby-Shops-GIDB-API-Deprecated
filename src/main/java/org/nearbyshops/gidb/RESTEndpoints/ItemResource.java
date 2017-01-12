@@ -1,6 +1,8 @@
 package org.nearbyshops.gidb.RESTEndpoints;
 
 import net.coobird.thumbnailator.Thumbnails;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.nearbyshops.gidb.DAOsPrepared.ItemDAO;
 import org.nearbyshops.gidb.DAOsPrepared.ItemDAOJoinOuter;
 import org.nearbyshops.gidb.Globals.GlobalConstants;
@@ -402,8 +404,194 @@ public class ItemResource {
 
 
 
+	// Add from Global
+
+	@POST
+	@Path("/AddFromGlobal")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({GlobalConstants.ROLE_ADMIN,GlobalConstants.ROLE_STAFF})
+	public Response addItemFromGlobal(List<Item> itemList)
+	{
+
+		int rowCountSum = 0;
+
+		if(Globals.accountApproved instanceof Staff) {
+
+			// checking permission
+			Staff staff = (Staff) Globals.accountApproved;
+
+			if (!staff.isCreateUpdateItems())
+			{
+				// the staff member doesnt have persmission to post Item Category
+
+				throw new ForbiddenException("Not Permitted");
+			}
+		}
 
 
+		for(Item item : itemList)
+		{
+			item.setItemImageURL(saveNewImage(item.getRt_gidb_service_url(),item.getItemImageURL()));
+
+			int rowCountTemp = 0;
+			rowCountTemp = itemDAO.saveItemRowCount(item);
+			rowCountSum = rowCountSum + rowCountTemp;
+
+			if(rowCountTemp==0)
+			{
+				// update failed delete the new added Item Image
+				deleteImageFileInternal(item.getItemImageURL());
+			}
+
+		}
+
+
+		if(rowCountSum >= itemList.size())
+		{
+
+			return Response.status(Status.CREATED)
+					.build();
+
+		}
+		else if(rowCountSum < itemList.size() && rowCountSum > 0)
+		{
+			return Response.status(Status.PARTIAL_CONTENT)
+					.build();
+
+		}
+		else if(rowCountSum <= 0)
+		{
+			return Response.status(Status.NOT_MODIFIED)
+					.entity(null)
+					.build();
+		}
+
+		return null;
+	}
+
+
+
+
+	// Image Utility Methods
+
+	boolean deleteImageFileInternal(String fileName)
+	{
+		boolean deleteStatus = false;
+
+		System.out.println("Filename: " + fileName);
+
+		try {
+
+			//Files.delete(BASE_DIR.resolve(fileName));
+			deleteStatus = Files.deleteIfExists(BASE_DIR.resolve(fileName));
+
+			// delete thumbnails
+			Files.deleteIfExists(BASE_DIR.resolve("three_hundred_" + fileName + ".jpg"));
+			Files.deleteIfExists(BASE_DIR.resolve("five_hundred_" + fileName + ".jpg"));
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return deleteStatus;
+	}
+
+
+
+
+	private String saveNewImage(String serviceURL,String imageID)
+	{
+		try
+		{
+			serviceURL = serviceURL + "/api/v1/Item/Image/" + imageID;
+
+			OkHttpClient client = new OkHttpClient();
+			Request request = new Request.Builder()
+					.url(serviceURL)
+					.build();
+
+			okhttp3.Response response = null;
+			response = client.newCall(request).execute();
+			response.body().byteStream();
+			System.out.println();
+
+			return uploadNewImage(response.body().byteStream());
+
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+
+		return null;
+	}
+
+
+
+
+	String uploadNewImage(InputStream in)
+	{
+
+		File theDir = new File(BASE_DIR.toString());
+
+		// if the directory does not exist, create it
+		if (!theDir.exists()) {
+
+			System.out.println("Creating directory: " + BASE_DIR.toString());
+
+			boolean result = false;
+
+			try{
+				theDir.mkdir();
+				result = true;
+			}
+			catch(Exception se){
+				//handle it
+			}
+			if(result) {
+				System.out.println("DIR created");
+			}
+		}
+
+
+
+		String fileName = "" + System.currentTimeMillis();
+
+
+		try {
+
+			// Copy the file to its location.
+			long filesize = 0;
+
+			filesize = Files.copy(in, BASE_DIR.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+
+			if(filesize > MAX_IMAGE_SIZE_MB * 1048 * 1024)
+			{
+				// delete file if it exceeds the file size limit
+				Files.deleteIfExists(BASE_DIR.resolve(fileName));
+				return null;
+			}
+
+			createThumbnails(fileName);
+
+			Image image = new Image();
+			image.setPath(fileName);
+
+			// Return a 201 Created response with the appropriate Location header.
+
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+
+			return null;
+		}
+
+		return fileName;
+	}
 
 
 

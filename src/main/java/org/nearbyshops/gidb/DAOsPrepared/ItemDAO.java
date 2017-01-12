@@ -100,6 +100,86 @@ public class ItemDAO {
 	}
 
 
+	public int saveItemRowCount(Item item)
+	{
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		int idOfInsertedRow = 0;
+
+		String insertItemCategory = "INSERT INTO "
+				+ Item.TABLE_NAME
+				+ "("
+				+ Item.ITEM_NAME + ","
+				+ Item.ITEM_DESC + ","
+				+ Item.ITEM_IMAGE_URL + ","
+
+				+ Item.ITEM_CATEGORY_ID + ","
+				+ Item.QUANTITY_UNIT + ","
+				+ Item.ITEM_DESCRIPTION_LONG
+
+				+ ") VALUES(?,?,? ,?,?,?)";
+
+		try {
+
+			connection = dataSource.getConnection();
+			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
+
+			int i = 0;
+			statement.setString(++i,item.getItemName());
+			statement.setString(++i,item.getItemDescription());
+			statement.setString(++i,item.getItemImageURL());
+
+			statement.setInt(++i,item.getItemCategoryID());
+			statement.setString(++i,item.getQuantityUnit());
+			statement.setString(++i,item.getItemDescriptionLong());
+
+
+			idOfInsertedRow = statement.executeUpdate();
+
+//			ResultSet rs = statement.getGeneratedKeys();
+//
+//			if(rs.next())
+//			{
+//				idOfInsertedRow = rs.getInt(1);
+//			}
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		finally
+		{
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+
+			}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(connection!=null)
+				{connection.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return idOfInsertedRow;
+	}
+
+
+
+
 	public int changeParent(Item item)
 	{
 

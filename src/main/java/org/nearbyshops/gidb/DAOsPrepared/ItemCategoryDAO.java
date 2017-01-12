@@ -110,6 +110,98 @@ public class ItemCategoryDAO {
 	}
 
 
+
+	public int saveItemCatRowCount(ItemCategory itemCategory)
+	{
+
+		int rowCount = 0;
+		Connection conn = null;
+//		Statement stmt = null;
+		PreparedStatement statement = null;
+
+
+		String insertItemCategory = "";
+//		System.out.println("isLeaf : " + itemCategory.getIsLeafNode());
+
+
+
+		insertItemCategory = "INSERT INTO "
+				+ ItemCategory.TABLE_NAME
+				+ "("
+				+ ItemCategory.ITEM_CATEGORY_NAME + ","
+				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION + ","
+				+ ItemCategory.PARENT_CATEGORY_ID + ","
+
+				+ ItemCategory.IMAGE_PATH + ","
+				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + ","
+				+ ItemCategory.IS_ABSTRACT + ","
+
+				+ ItemCategory.IS_LEAF_NODE
+				+ ") VALUES(?,?,? ,?,?,? ,?)";
+
+		int idOfInsertedRow = 0;
+
+		try {
+
+			conn = dataSource.getConnection();
+			statement = conn.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
+
+			int i = 0;
+			statement.setString(++i,itemCategory.getCategoryName());
+			statement.setString(++i,itemCategory.getCategoryDescription());
+			statement.setInt(++i,itemCategory.getParentCategoryID());
+
+			statement.setString(++i,itemCategory.getImagePath());
+			statement.setString(++i,itemCategory.getDescriptionShort());
+			statement.setBoolean(++i,itemCategory.getisAbstractNode());
+
+			statement.setBoolean(++i,itemCategory.getIsLeafNode());
+
+
+			rowCount = statement.executeUpdate();
+
+//			ResultSet rs = statement.getGeneratedKeys();
+//
+//			if(rs.next())
+//			{
+//				idOfInsertedRow = rs.getInt(1);
+//			}
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(conn!=null)
+				{conn.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount;
+	}
+
+
+
+
+
 	public int changeParent(ItemCategory itemCategory)
 	{
 		int rowCount = 0;
