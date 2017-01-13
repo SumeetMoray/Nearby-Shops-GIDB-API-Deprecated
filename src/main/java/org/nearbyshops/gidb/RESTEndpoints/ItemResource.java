@@ -298,8 +298,17 @@ public class ItemResource {
 				throw new ForbiddenException("Not Permitted");
 			}
 		}
-		
+
+		Item item = itemDAO.getItemImageURL(itemID);
 		int rowCount = itemDAO.deleteItem(itemID);
+
+
+		if(item!=null && rowCount>=1)
+		{
+			// delete successful delete the image also
+			System.out.println("Image FIle : " + item.getItemImageURL());
+			deleteImageFileInternal(item.getItemImageURL());
+		}
 		
 		
 		if(rowCount>=1)

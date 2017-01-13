@@ -111,26 +111,35 @@ public class ItemCategoryResource {
 
 		String message = "";
 
+		ItemCategory itemCategory = itemCategoryDAO.getItemCatImageURL(itemCategoryID);
 		int rowCount = itemCategoryDAO.deleteItemCategory(itemCategoryID);
+
+
+		if(itemCategory!=null && rowCount>=1)
+		{
+			// delete successful delete the image also
+			System.out.println("Image FIle Deleted : " + itemCategory.getImagePath());
+			deleteImageFileInternal(itemCategory.getImagePath());
+		}
+
+
 
 		message = "Total Deleted : " + rowCount;
 
 		if(rowCount>=1)
 		{
-			Response response = Response.status(Status.OK)
+
+			return Response.status(Status.OK)
 					.entity(null)
 					.build();
-
-			return response;
 		}
 
 		if(rowCount == 0)
 		{
-			Response response = Response.status(Status.NOT_MODIFIED)
+
+			return Response.status(Status.NOT_MODIFIED)
 					.entity(null)
 					.build();
-
-			return response;
 		}
 
 		return null;

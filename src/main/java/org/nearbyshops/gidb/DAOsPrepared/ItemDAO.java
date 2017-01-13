@@ -3,8 +3,10 @@ package org.nearbyshops.gidb.DAOsPrepared;
 import com.zaxxer.hikari.HikariDataSource;
 import org.nearbyshops.gidb.Globals.Globals;
 import org.nearbyshops.gidb.Model.Item;
+import org.nearbyshops.gidb.ModelEndpoints.ItemEndPoint;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -557,5 +559,142 @@ public class ItemDAO {
 
 		return rowCountDeleted;
 	}
+
+
+	public Item getItemImageURL(
+			Integer itemID
+	) {
+
+
+		boolean isfirst = true;
+
+		String query = "";
+
+//		String queryNormal = "SELECT * FROM " + Item.TABLE_NAME;
+
+
+		String queryJoin = "SELECT DISTINCT "
+//				+ Item.TABLE_NAME + "." + Item.ITEM_CATEGORY_ID + ","
+//				+ Item.TABLE_NAME + "." + Item.ITEM_ID + ","
+				+ Item.TABLE_NAME + "." + Item.ITEM_IMAGE_URL + ""
+//				+ Item.TABLE_NAME + "." + Item.ITEM_NAME + ","
+//				+ Item.TABLE_NAME + "." + Item.ITEM_DESC + ","
+
+//				+ Item.TABLE_NAME + "." + Item.QUANTITY_UNIT + ","
+//				+ Item.TABLE_NAME + "." + Item.DATE_TIME_CREATED + ","
+//				+ Item.TABLE_NAME + "." + Item.ITEM_DESCRIPTION_LONG + ""
+
+				+ " FROM " + Item.TABLE_NAME
+				+ " WHERE " + Item.ITEM_ID + " = " + itemID;
+
+
+
+
+
+//
+//		if(itemID != null)
+//		{
+//			queryJoin = queryJoin + " WHERE "
+//					+ Item.TABLE_NAME
+//					+ "."
+//					+ Item.ITEM_ID + " = " + itemID;
+//
+//
+//			isfirst = false;
+//		}
+
+
+
+
+
+
+		/*
+
+		Applying filters Ends
+
+		 */
+
+
+//		boolean isJoinQuery = false;
+
+		query = queryJoin;
+//		isJoinQuery = true;
+
+//		ArrayList<Item> itemList = new ArrayList<Item>();
+		Item item = null;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
+		try {
+
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
+
+//			System.out.println(query);
+			rs = statement.executeQuery(queryJoin);
+
+			while(rs.next())
+			{
+				item = new Item();
+
+				item.setItemID(itemID);
+//				item.setItemName(rs.getString(Item.ITEM_NAME));
+//				item.setItemDescription(rs.getString(Item.ITEM_DESC));
+
+				item.setItemImageURL(rs.getString(Item.ITEM_IMAGE_URL));
+//				item.setItemCategoryID(rs.getInt(Item.ITEM_CATEGORY_ID));
+
+//				item.setItemDescriptionLong(rs.getString(Item.ITEM_DESCRIPTION_LONG));
+//				item.setDateTimeCreated(rs.getTimestamp(Item.DATE_TIME_CREATED));
+//				item.setQuantityUnit(rs.getString(Item.QUANTITY_UNIT));
+			}
+
+
+
+//			System.out.println("Item By CategoryID " + itemList.size());
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		finally
+
+		{
+
+			try {
+				if(rs!=null)
+				{rs.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(connection!=null)
+				{connection.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return item;
+	}
+
+
+
 
 }

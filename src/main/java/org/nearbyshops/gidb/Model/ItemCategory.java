@@ -14,6 +14,7 @@ public class ItemCategory {
 	public static final String PARENT_CATEGORY_ID = "PARENT_CATEGORY_ID";
 	public static final String IS_LEAF_NODE = "IS_LEAF";
 	public static final String IMAGE_PATH = "IMAGE_PATH";
+	public static final String CATEGORY_ORDER = "CATEGORY_ORDER";
 
 	// to be implemented
 	public static final String ITEM_CATEGORY_DESCRIPTION_SHORT = "ITEM_CATEGORY_DESCRIPTION_SHORT";
@@ -38,6 +39,7 @@ public class ItemCategory {
 			+ " " + ItemCategory.PARENT_CATEGORY_ID + " INT,"
 			+ " " + ItemCategory.IS_LEAF_NODE + " boolean,"
 			+ " " + ItemCategory.IMAGE_PATH + " text,"
+			+ " " + ItemCategory.CATEGORY_ORDER + " INT,"
 
 			+ " " + ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + " text,"
 			+ " " + ItemCategory.IS_ABSTRACT + " boolean,"
@@ -58,14 +60,25 @@ public class ItemCategory {
 	private Integer parentCategoryID;
 	private boolean isLeafNode;
 	private String imagePath;
+	private Integer categoryOrder;
 	// recently added
 	private boolean isAbstractNode;
 	private String descriptionShort;
 	private boolean isEnabled;
 	private boolean isWaitlisted;
 
-
 	private String rt_gidb_service_url;
+
+
+
+
+	public Integer getCategoryOrder() {
+		return categoryOrder;
+	}
+
+	public void setCategoryOrder(Integer categoryOrder) {
+		this.categoryOrder = categoryOrder;
+	}
 
 	public String getRt_gidb_service_url() {
 		return rt_gidb_service_url;

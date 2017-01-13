@@ -2,6 +2,7 @@ package org.nearbyshops.gidb.DAOsPrepared;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.nearbyshops.gidb.Globals.Globals;
+import org.nearbyshops.gidb.Model.Item;
 import org.nearbyshops.gidb.Model.ItemCategory;
 import org.nearbyshops.gidb.ModelEndpoints.ItemCategoryEndPoint;
 
@@ -44,11 +45,12 @@ public class ItemCategoryDAO {
 					+ ItemCategory.PARENT_CATEGORY_ID + ","
 
 					+ ItemCategory.IMAGE_PATH + ","
+					+ ItemCategory.CATEGORY_ORDER + ","
 					+ ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + ","
 					+ ItemCategory.IS_ABSTRACT + ","
 
 					+ ItemCategory.IS_LEAF_NODE
-					+ ") VALUES(?,?,? ,?,?,? ,?)";
+					+ ") VALUES(?,?,? ,?,?,?,? ,?)";
 
 		int idOfInsertedRow = 0;
 		
@@ -63,6 +65,7 @@ public class ItemCategoryDAO {
 			statement.setInt(++i,itemCategory.getParentCategoryID());
 
 			statement.setString(++i,itemCategory.getImagePath());
+			statement.setObject(++i,itemCategory.getCategoryOrder());
 			statement.setString(++i,itemCategory.getDescriptionShort());
 			statement.setBoolean(++i,itemCategory.getisAbstractNode());
 
@@ -133,11 +136,12 @@ public class ItemCategoryDAO {
 				+ ItemCategory.PARENT_CATEGORY_ID + ","
 
 				+ ItemCategory.IMAGE_PATH + ","
+				+ ItemCategory.CATEGORY_ORDER + ","
 				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + ","
 				+ ItemCategory.IS_ABSTRACT + ","
 
 				+ ItemCategory.IS_LEAF_NODE
-				+ ") VALUES(?,?,? ,?,?,? ,?)";
+				+ ") VALUES(?,?,? ,?,?,?,? ,?)";
 
 		int idOfInsertedRow = 0;
 
@@ -152,6 +156,7 @@ public class ItemCategoryDAO {
 			statement.setInt(++i,itemCategory.getParentCategoryID());
 
 			statement.setString(++i,itemCategory.getImagePath());
+			statement.setObject(++i,itemCategory.getCategoryOrder());
 			statement.setString(++i,itemCategory.getDescriptionShort());
 			statement.setBoolean(++i,itemCategory.getisAbstractNode());
 
@@ -468,6 +473,7 @@ public class ItemCategoryDAO {
 				+ " " + ItemCategory.ITEM_CATEGORY_NAME + " = ?,"
 				+ " " + ItemCategory.ITEM_CATEGORY_DESCRIPTION + " = ?,"
 				+ " " + ItemCategory.IMAGE_PATH + " = ?,"
+				+ " " + ItemCategory.CATEGORY_ORDER + " = ?,"
 
 				+ " " + ItemCategory.PARENT_CATEGORY_ID + " = ?,"
 				+ " " + ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + " = ?,"
@@ -493,6 +499,7 @@ public class ItemCategoryDAO {
 			statement.setString(++i,itemCategory.getCategoryName());
 			statement.setString(++i,itemCategory.getCategoryDescription());
 			statement.setString(++i,itemCategory.getImagePath());
+			statement.setObject(++i,itemCategory.getCategoryOrder());
 
 			statement.setObject(++i,itemCategory.getParentCategoryID());
 			statement.setString(++i,itemCategory.getDescriptionShort());
@@ -610,6 +617,7 @@ public class ItemCategoryDAO {
 				+ ItemCategory.ITEM_CATEGORY_ID + ","
 				+ ItemCategory.PARENT_CATEGORY_ID + ","
 				+ ItemCategory.IMAGE_PATH + ","
+				+ ItemCategory.CATEGORY_ORDER + ","
 				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION + ","
 
 				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + ","
@@ -788,6 +796,8 @@ public class ItemCategoryDAO {
 				itemCategory.setParentCategoryID(rs.getInt(ItemCategory.PARENT_CATEGORY_ID));
 				itemCategory.setIsLeafNode(rs.getBoolean(ItemCategory.IS_LEAF_NODE));
 				itemCategory.setImagePath(rs.getString(ItemCategory.IMAGE_PATH));
+				itemCategory.setCategoryOrder(rs.getInt(ItemCategory.CATEGORY_ORDER));
+
 				itemCategory.setCategoryName(rs.getString(ItemCategory.ITEM_CATEGORY_NAME));
 
 				itemCategory.setisAbstractNode(rs.getBoolean(ItemCategory.IS_ABSTRACT));
@@ -1333,5 +1343,83 @@ public class ItemCategoryDAO {
 	
 		return itemCategory;
 	}
-	
+
+
+	public ItemCategory getItemCatImageURL(
+			Integer itemCatID
+	) {
+
+		String queryJoin = "SELECT DISTINCT "
+				+ ItemCategory.TABLE_NAME + "." + ItemCategory.IMAGE_PATH + ""
+				+ " FROM " + ItemCategory.TABLE_NAME
+				+ " WHERE " + ItemCategory.ITEM_CATEGORY_ID + " = " + itemCatID;
+
+
+		ItemCategory itemCategory = null;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
+		try {
+
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
+
+//			System.out.println(query);
+			rs = statement.executeQuery(queryJoin);
+
+			while(rs.next())
+			{
+				itemCategory = new ItemCategory();
+				itemCategory.setItemCategoryID(itemCatID);
+				itemCategory.setImagePath(rs.getString(ItemCategory.IMAGE_PATH));
+			}
+
+
+
+//			System.out.println("Item By CategoryID " + itemList.size());
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		finally
+
+		{
+
+			try {
+				if(rs!=null)
+				{rs.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+
+				if(connection!=null)
+				{connection.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return itemCategory;
+	}
+
+
+
+
 }
