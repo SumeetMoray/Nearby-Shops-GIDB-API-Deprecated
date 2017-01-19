@@ -433,7 +433,7 @@ public class ItemCategoryResource {
 			// checking permission
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
+			if (!staff.isCreateUpdateItemCategory())
 			{
 				// the staff member doesnt have persmission to post Item Category
 
