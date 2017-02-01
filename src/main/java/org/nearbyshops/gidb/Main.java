@@ -10,8 +10,10 @@ import org.nearbyshops.gidb.ModelRoles.Admin;
 import org.nearbyshops.gidb.ModelRoles.Staff;
 import org.nearbyshops.gidb.ModelRoles.Usernames;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -122,8 +124,14 @@ public class Main {
                 }
             }
         }
-
     }
+
+
+
+
+
+
+
 
 
 
@@ -212,8 +220,35 @@ public class Main {
                         + ")";
 
                 statement.executeUpdate(insertItemCategory);
-
             }
+
+
+
+                // create directory images. Check if directory exist and create one if not exist
+
+                final java.nio.file.Path BASE_DIR = Paths.get("./images");
+
+                File theDir = new File(BASE_DIR.toString());
+
+                // if the directory does not exist, create it
+                if (!theDir.exists()) {
+
+                    System.out.println("Creating directory: " + BASE_DIR.toString());
+
+                    boolean result = false;
+
+                    try{
+                        theDir.mkdir();
+                        result = true;
+                    }
+                    catch(Exception se){
+                        //handle it
+                    }
+
+                    if(result) {
+                        System.out.println("DIR created");
+                    }
+                }
 
 
 

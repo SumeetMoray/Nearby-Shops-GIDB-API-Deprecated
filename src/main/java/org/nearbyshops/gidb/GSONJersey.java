@@ -37,8 +37,14 @@ public class GSONJersey implements MessageBodyWriter<Object>,
     private Gson getGson() {
         if (gson == null) {
             final GsonBuilder gsonBuilder = new GsonBuilder();
-            gson = gsonBuilder.disableHtmlEscaping()
+            gson = gsonBuilder
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                     .create();
+
+
+//            .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+
+            //                    .disableHtmlEscaping()
 
 //            .setDateFormat("EEEEE, dd MMM yyyy HH:mm:ss ZZZZ zzz")
 
