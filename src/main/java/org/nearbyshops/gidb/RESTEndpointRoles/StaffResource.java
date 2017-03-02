@@ -26,7 +26,7 @@ import java.util.List;
 import static org.nearbyshops.gidb.Globals.Globals.staffDAOPrepared;
 
 
-@Path("/v1/Staff")
+@Path("/api/v1/Staff")
 public class StaffResource {
 
 

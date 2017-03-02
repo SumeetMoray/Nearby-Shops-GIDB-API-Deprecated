@@ -28,6 +28,22 @@ public class Item {
 	public static final String IS_ENABLED = "IS_ENABLED";
 	public static final String IS_WAITLISTED = "IS_WAITLISTED";
 
+	public static final String LIST_PRICE = "LIST_PRICE";
+	public static final String BARCODE = "BARCODE";
+	public static final String BARCODE_TYPE_CODE = "BARCODE_TYPE_CODE";
+	public static final String WEIGHT = "WEIGHT";
+
+	public static final String IMAGE_COPYRIGHTS = "IMAGE_COPYRIGHTS";
+
+	public static final String GIDB_ITEM_ID = "GIDB_ITEM_ID";
+	public static final String GIDB_SERVICE_URL = "GIDB_SERVICE_URL";
+
+
+	// Barcode Type Code constants
+
+	public static final int BARCODE_TYPE_EAN = 1;
+	public static final int BARCODE_TYPE_UPC = 2;
+
 
 
 	// Create Table Statement
@@ -43,6 +59,10 @@ public class Item {
 			+ " " + Item.IS_ENABLED + " boolean,"
 			+ " " + Item.IS_WAITLISTED + " boolean,"
 			+ " " + Item.DATE_TIME_CREATED + "  timestamp with time zone NOT NULL DEFAULT now(),"
+
+			+ " " + Item.LIST_PRICE + " INT,"
+			+ " " + Item.BARCODE + " INT,"
+			+ " " + Item.BARCODE_TYPE_CODE + " INT,"
 			+ " FOREIGN KEY(" + Item.ITEM_CATEGORY_ID +") REFERENCES " + ItemCategory.TABLE_NAME + "(" + ItemCategory.ITEM_CATEGORY_ID + ")"
 			+ ")";
 
@@ -76,10 +96,16 @@ public class Item {
 	private Boolean isEnabled;
 	private Boolean isWaitlisted;
 
+	private int listPrice;
+	private int barcode;
+	private int barcodeTypeCode;
 
 	private Float rt_rating_avg;
 	private Float rt_rating_count;
 	private String rt_gidb_service_url;
+
+
+
 
 	public String getRt_gidb_service_url() {
 		return rt_gidb_service_url;
@@ -111,6 +137,29 @@ public class Item {
 	//No-args constructor
 
 
+	public int getListPrice() {
+		return listPrice;
+	}
+
+	public void setListPrice(int listPrice) {
+		this.listPrice = listPrice;
+	}
+
+	public int getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(int barcode) {
+		this.barcode = barcode;
+	}
+
+	public int getBarcodeTypeCode() {
+		return barcodeTypeCode;
+	}
+
+	public void setBarcodeTypeCode(int barcodeTypeCode) {
+		this.barcodeTypeCode = barcodeTypeCode;
+	}
 
 	public Boolean getEnabled() {
 		return isEnabled;

@@ -59,12 +59,24 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NAME + ","
 				+ Staff.GOVERNMENT_ID_NUMBER + ","
 
-				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ""
-//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-//				+ Staff.APPROVE_SHOPS + ","
-//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
-				+ ") VALUES(?,?,? ,?,? ,?,?,?,? ,?,? ,?,?)";
+//				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
+//				+ Staff.CREATE_UPDATE_ITEMS + ""
+
+				+ Staff.CREATE_ITEM_CATEGORY + ","
+				+ Staff.UPDATE_ITEM_CATEGORY + ","
+				+ Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+				+ Staff.DELETE_ITEM_CATEGORY + ","
+				+ Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+
+				+ Staff.CREATE_ITEM + ","
+				+ Staff.UPDATE_ITEM + ","
+				+ Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + ","
+				+ Staff.DELETE_ITEM + ","
+				+ Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + ""
+
+
+
+				+ ") VALUES(?,?,? ,?,? ,?,?,?,? ,?,? ,?,?,?,?,? ,?,?,?,?,?)";
 
 		try {
 
@@ -105,12 +117,20 @@ public class StaffDAOPrepared {
 			statement.setString(++i,staff.getGovtIDName());
 			statement.setString(++i,staff.getGovtIDNumber());
 
+//			statement.setObject(++i,staff.isCreateUpdateItemCategory());
+//			statement.setObject(++i,staff.isCreateUpdateItems());
 
-			statement.setObject(++i,staff.isCreateUpdateItemCategory());
-			statement.setObject(++i,staff.isCreateUpdateItems());
-//			statement.setObject(++i,staff.isApproveShopAdminAccounts());
-//			statement.setObject(++i,staff.isApproveShops());
-//			statement.setObject(++i,staff.isApproveEndUserAccounts());
+			statement.setObject(++i,staff.isPermitCreateItemCategories());
+			statement.setObject(++i,staff.isPermitUpdateItemCategories());
+			statement.setObject(++i,staff.isPermitUpdateOnlyItemCategoriesAddedBySelf());
+			statement.setObject(++i,staff.isPermitDeleteItemCategories());
+			statement.setObject(++i,staff.isPermitDeleteOnlyItemCategoriesAddedBySelf());
+
+			statement.setObject(++i,staff.isPermitCreateItems());
+			statement.setObject(++i,staff.isPermitUpdateItems());
+			statement.setObject(++i,staff.isPermitUpdateOnlyItemsAddedBySelf());
+			statement.setObject(++i,staff.isPermitDeleteItems());
+			statement.setObject(++i,staff.isPermitDeleteOnlyItemsAddedBySelf());
 
 
 			statement.executeUpdate();
@@ -202,11 +222,18 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NAME + "=?,"
 				+ Staff.GOVERNMENT_ID_NUMBER + "=?,"
 
-				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + "=?,"
-				+ Staff.CREATE_UPDATE_ITEMS + "=?"
-//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + "=?,"
-//				+ Staff.APPROVE_SHOPS + "=?,"
-//				+ Staff.APPROVE_END_USER_ACCOUNTS + "=?"
+
+				+ Staff.CREATE_ITEM_CATEGORY + "=?,"
+				+ Staff.UPDATE_ITEM_CATEGORY + "=?,"
+				+ Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + "=?,"
+				+ Staff.DELETE_ITEM_CATEGORY + "=?,"
+				+ Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + "=?,"
+
+				+ Staff.CREATE_ITEM + "=?,"
+				+ Staff.UPDATE_ITEM + "=?,"
+				+ Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + "=?,"
+				+ Staff.DELETE_ITEM + "=?,"
+				+ Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + "=?"
 
 				+ " WHERE " + Staff.STAFF_ID + " = ?";
 
@@ -247,11 +274,21 @@ public class StaffDAOPrepared {
 			statement.setString(++i,staff.getGovtIDNumber());
 
 
-			statement.setObject(++i,staff.isCreateUpdateItemCategory());
-			statement.setObject(++i,staff.isCreateUpdateItems());
-//			statement.setObject(++i,staff.isApproveShopAdminAccounts());
-//			statement.setObject(++i,staff.isApproveShops());
-//			statement.setObject(++i,staff.isApproveEndUserAccounts());
+//			statement.setObject(++i,staff.isCreateUpdateItemCategory());
+//			statement.setObject(++i,staff.isCreateUpdateItems());
+
+
+			statement.setObject(++i,staff.isPermitCreateItemCategories());
+			statement.setObject(++i,staff.isPermitUpdateItemCategories());
+			statement.setObject(++i,staff.isPermitUpdateOnlyItemCategoriesAddedBySelf());
+			statement.setObject(++i,staff.isPermitDeleteItemCategories());
+			statement.setObject(++i,staff.isPermitDeleteOnlyItemCategoriesAddedBySelf());
+
+			statement.setObject(++i,staff.isPermitCreateItems());
+			statement.setObject(++i,staff.isPermitUpdateItems());
+			statement.setObject(++i,staff.isPermitUpdateOnlyItemsAddedBySelf());
+			statement.setObject(++i,staff.isPermitDeleteItems());
+			statement.setObject(++i,staff.isPermitDeleteOnlyItemsAddedBySelf());
 
 			statement.setObject(++i,staff.getUserID());
 
@@ -341,11 +378,6 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NAME + "=?,"
 				+ Staff.GOVERNMENT_ID_NUMBER + "=?"
 
-//				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + "=?,"
-//				+ Staff.CREATE_UPDATE_ITEMS + "=?,"
-//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + "=?,"
-//				+ Staff.APPROVE_SHOPS + "=?,"
-//				+ Staff.APPROVE_END_USER_ACCOUNTS + "=?"
 
 				+ " WHERE " + Staff.STAFF_ID + " = ?";
 
@@ -567,11 +599,21 @@ public class StaffDAOPrepared {
 				+ Staff.GOVERNMENT_ID_NUMBER + ","
 				+ Staff.TIMESTAMP_CREATED + ","
 
-				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ""
-//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-//				+ Staff.APPROVE_SHOPS + ","
-//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
+//				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
+//				+ Staff.CREATE_UPDATE_ITEMS + ""
+
+				+ Staff.CREATE_ITEM_CATEGORY + ","
+				+ Staff.UPDATE_ITEM_CATEGORY + ","
+				+ Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+				+ Staff.DELETE_ITEM_CATEGORY + ","
+				+ Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+
+				+ Staff.CREATE_ITEM + ","
+				+ Staff.UPDATE_ITEM + ","
+				+ Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + ","
+				+ Staff.DELETE_ITEM + ","
+				+ Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + ""
+
 
 				+ " FROM " + Staff.TABLE_NAME +
 				" INNER JOIN " + Usernames.TABLE_NAME + " ON (" + Staff.STAFF_ID + " = " + Usernames.USER_ID + ")";
@@ -632,11 +674,22 @@ public class StaffDAOPrepared {
 				staff.setGovtIDNumber(rs.getString(Staff.GOVERNMENT_ID_NUMBER));
 				staff.setTimestampCreated(rs.getTimestamp(Staff.TIMESTAMP_CREATED));
 
-				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
-				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+//				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
+//				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
+
+
+				staff.setPermitCreateItemCategories(rs.getBoolean(Staff.CREATE_ITEM_CATEGORY));
+				staff.setPermitUpdateItemCategories(rs.getBoolean(Staff.UPDATE_ITEM_CATEGORY));
+				staff.setPermitUpdateOnlyItemCategoriesAddedBySelf(rs.getBoolean(Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF));
+				staff.setPermitDeleteItemCategories(rs.getBoolean(Staff.DELETE_ITEM_CATEGORY));
+				staff.setPermitDeleteOnlyItemCategoriesAddedBySelf(rs.getBoolean(Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF));
+
+
+				staff.setPermitCreateItems(rs.getBoolean(Staff.CREATE_ITEM));
+				staff.setPermitUpdateItems(rs.getBoolean(Staff.UPDATE_ITEM));
+				staff.setPermitUpdateOnlyItemsAddedBySelf(rs.getBoolean(Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF));
+				staff.setPermitDeleteItems(rs.getBoolean(Staff.DELETE_ITEM));
+				staff.setPermitDeleteOnlyItemsAddedBySelf(rs.getBoolean(Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF));
 
 				staffList.add(staff);
 			}
@@ -706,13 +759,10 @@ public class StaffDAOPrepared {
 
 				+ Staff.GOVERNMENT_ID_NAME + ","
 				+ Staff.GOVERNMENT_ID_NUMBER + ","
-				+ Staff.TIMESTAMP_CREATED + ","
+				+ Staff.TIMESTAMP_CREATED + ""
 
-				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-				+ Staff.CREATE_UPDATE_ITEMS + ""
-//				+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-//				+ Staff.APPROVE_SHOPS + ","
-//				+ Staff.APPROVE_END_USER_ACCOUNTS + ""
+//				+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
+//				+ Staff.CREATE_UPDATE_ITEMS + ""
 
 				+ " FROM " + Staff.TABLE_NAME
 				+ " INNER JOIN " + Usernames.TABLE_NAME + " ON (" + Staff.STAFF_ID + " = " + Usernames.USER_ID + ")"
@@ -758,11 +808,9 @@ public class StaffDAOPrepared {
 				staff.setGovtIDNumber(rs.getString(Staff.GOVERNMENT_ID_NUMBER));
 				staff.setTimestampCreated(rs.getTimestamp(Staff.TIMESTAMP_CREATED));
 
-				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
-				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+//				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
+//				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
+
 			}
 
 
@@ -906,23 +954,23 @@ public class StaffDAOPrepared {
 						+ Staff.PASSWORD + ","
 						+ Staff.IS_ENABLED  + ","
 
-						+ Staff.CREATE_UPDATE_ITEM_CATEGORY + ","
-						+ Staff.CREATE_UPDATE_ITEMS + ""
-//						+ Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + ","
-//						+ Staff.APPROVE_SHOPS + ","
-//						+ Staff.APPROVE_END_USER_ACCOUNTS + "" +
+						+ Staff.CREATE_ITEM_CATEGORY + ","
+						+ Staff.UPDATE_ITEM_CATEGORY + ","
+						+ Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+						+ Staff.DELETE_ITEM_CATEGORY + ","
+						+ Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + ","
+
+						+ Staff.CREATE_ITEM + ","
+						+ Staff.UPDATE_ITEM + ","
+						+ Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + ","
+						+ Staff.DELETE_ITEM + ","
+						+ Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + ""
 
 						+ " FROM " + Staff.TABLE_NAME +
 						" INNER JOIN " + Usernames.TABLE_NAME +
 						" ON ( " + Usernames.USER_ID + " = " + Staff.STAFF_ID + ")";
 
 
-//		if(staffID!=null)
-//		{
-//			query = query + " WHERE " + Staff.STAFF_ID + " = " + staffID;
-//
-//			isFirst = false;
-//		}
 
 		if(username!=null)
 		{
@@ -989,11 +1037,17 @@ public class StaffDAOPrepared {
 				staff.setPassword(rs.getString(Staff.PASSWORD));
 				staff.setEnabled(rs.getBoolean(Staff.IS_ENABLED));
 
-				staff.setCreateUpdateItemCategory(rs.getBoolean(Staff.CREATE_UPDATE_ITEM_CATEGORY));
-				staff.setCreateUpdateItems(rs.getBoolean(Staff.CREATE_UPDATE_ITEMS));
-//				staff.setApproveShopAdminAccounts(rs.getBoolean(Staff.APPROVE_SHOP_ADMIN_ACCOUNTS));
-//				staff.setApproveShops(rs.getBoolean(Staff.APPROVE_SHOPS));
-//				staff.setApproveEndUserAccounts(rs.getBoolean(Staff.APPROVE_END_USER_ACCOUNTS));
+				staff.setPermitCreateItemCategories(rs.getBoolean(Staff.CREATE_ITEM_CATEGORY));
+				staff.setPermitUpdateItemCategories(rs.getBoolean(Staff.UPDATE_ITEM_CATEGORY));
+				staff.setPermitUpdateOnlyItemCategoriesAddedBySelf(rs.getBoolean(Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF));
+				staff.setPermitDeleteItemCategories(rs.getBoolean(Staff.DELETE_ITEM_CATEGORY));
+				staff.setPermitDeleteOnlyItemCategoriesAddedBySelf(rs.getBoolean(Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF));
+
+				staff.setPermitCreateItems(rs.getBoolean(Staff.CREATE_ITEM));
+				staff.setPermitUpdateItems(rs.getBoolean(Staff.UPDATE_ITEM));
+				staff.setPermitUpdateOnlyItemsAddedBySelf(rs.getBoolean(Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF));
+				staff.setPermitDeleteItems(rs.getBoolean(Staff.DELETE_ITEM));
+				staff.setPermitDeleteOnlyItemsAddedBySelf(rs.getBoolean(Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF));
 
 			}
 

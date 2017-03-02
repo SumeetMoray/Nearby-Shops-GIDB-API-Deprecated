@@ -4,9 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
-import org.nearbyshops.gidb.DAOsPrepared.ItemCategoryDAO;
-import org.nearbyshops.gidb.DAOsPrepared.ItemDAO;
-import org.nearbyshops.gidb.DAOsPrepared.ItemDAOJoinOuter;
+import org.nearbyshops.gidb.DAOsPrepared.*;
 import org.nearbyshops.gidb.DAOsPreparedRoles.AdminDAOPrepared;
 import org.nearbyshops.gidb.DAOsPreparedRoles.StaffDAOPrepared;
 import org.nearbyshops.gidb.JDBCContract;
@@ -23,6 +21,11 @@ public class Globals {
 	public static ItemCategoryDAO itemCategoryDAO = new ItemCategoryDAO();
 	public static ItemDAO itemDAO = new ItemDAO();
 	public static ItemDAOJoinOuter itemDAOJoinOuter = new ItemDAOJoinOuter();
+
+	public static StaffItemDAO staffItemDAO = new StaffItemDAO();
+	public static StaffItemCatDAO staffItemCatDAO = new StaffItemCatDAO();
+
+	public static ItemImagesDAO itemImagesDAO = new ItemImagesDAO();
 
 
 //	public static ServiceConfigurationDAO serviceConfigurationDAO = new ServiceConfigurationDAO();

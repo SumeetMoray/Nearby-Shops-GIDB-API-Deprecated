@@ -10,6 +10,7 @@ import org.nearbyshops.gidb.Globals.Globals;
 import org.nearbyshops.gidb.Model.Image;
 import org.nearbyshops.gidb.Model.Item;
 import org.nearbyshops.gidb.ModelEndpoints.ItemEndPoint;
+import org.nearbyshops.gidb.ModelRoles.Admin;
 import org.nearbyshops.gidb.ModelRoles.Staff;
 
 import javax.annotation.security.RolesAllowed;
@@ -27,11 +28,12 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 
-@Path("/v1/Item")
+@Path("/api/v1/Item")
 public class ItemResource {
 
 	private ItemDAO itemDAO = Globals.itemDAO;
 	private ItemDAOJoinOuter itemDAOJoinOuter = Globals.itemDAOJoinOuter;
+
 
 
 	@POST
@@ -40,27 +42,37 @@ public class ItemResource {
 	@RolesAllowed({GlobalConstants.ROLE_ADMIN,GlobalConstants.ROLE_STAFF})
 	public Response saveItem(Item item)
 	{
+		int idOfInsertedRow = -1;
 
 		if(Globals.accountApproved instanceof Staff) {
 
 			// checking permission
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
+			if (!staff.isPermitCreateItems())
 			{
 				// the staff member doesnt have persmission to post Item Category
 
 				throw new ForbiddenException("Not Permitted");
 			}
+
+			idOfInsertedRow = itemDAO.saveItemForStaff(item,staff.getUserID(),false);
+
+		}
+		else if(Globals.accountApproved instanceof Admin)
+		{
+
+			idOfInsertedRow = itemDAO.saveItem(item);
 		}
 
 
-		int idOfInsertedRow = itemDAO.saveItem(item);
-		
-		item.setItemID(idOfInsertedRow);
-		
+
+
+
+
 		if(idOfInsertedRow >=1)
 		{
+			item.setItemID(idOfInsertedRow);
 
 			return Response.status(Status.CREATED)
 					.location(URI.create("/api/Item/" + idOfInsertedRow))
@@ -81,6 +93,9 @@ public class ItemResource {
 
 
 
+
+
+
 	@PUT
 	@Path("/ChangeParent/{ItemID}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -93,12 +108,23 @@ public class ItemResource {
 
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
+			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
 			{
-				// the staff member doesnt have persmission to post Item Category
+				if(Globals.staffItemDAO.checkStaffItem(itemID,staff.getUserID())==null)
+				{
+					// Item not added by self
+					throw new ForbiddenException("Not Permitted");
+				}
+			}
+			else if (staff.isPermitUpdateItems())
+			{
 
+			}
+			else
+			{
 				throw new ForbiddenException("Not Permitted");
 			}
+
 		}
 
 		item.setItemID(itemID);
@@ -140,12 +166,25 @@ public class ItemResource {
 
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
-			{
-				// the staff member doesnt have persmission to post Item Category
+//			if (!staff.isCreateUpdateItems())
+//			{
+//				throw new ForbiddenException("Not Permitted");
+//			}
 
+
+			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
+			{
+					throw new ForbiddenException("Not Permitted");
+			}
+			else if (staff.isPermitUpdateItems())
+			{
+
+			}
+			else
+			{
 				throw new ForbiddenException("Not Permitted");
 			}
+
 		}
 
 		int rowCountSum = 0;
@@ -195,11 +234,32 @@ public class ItemResource {
 
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
+//			if (!staff.isCreateUpdateItems())
+//			{
+//				 the staff member doesnt have persmission to post Item Category
+//				throw new ForbiddenException("Not Permitted");
+//			}
+
+
+			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
 			{
-				// the staff member doesnt have persmission to post Item Category
+
+				if(Globals.staffItemDAO.checkStaffItem(itemID,staff.getUserID())==null)
+				{
+					// Item not added by self
+					throw new ForbiddenException("Not Permitted");
+				}
+
+			}
+			else if (staff.isPermitUpdateItems())
+			{
+
+			}
+			else
+			{
 				throw new ForbiddenException("Not Permitted");
 			}
+
 		}
 			
 		item.setItemID(itemID);
@@ -240,11 +300,27 @@ public class ItemResource {
 
 			// checking permission
 			Staff staff = (Staff) Globals.accountApproved;
-			if (!staff.isCreateUpdateItems())
+
+//			if (!staff.isCreateUpdateItems())
+//			{
+//				// the staff member doesnt have persmission to post Item Category
+//				throw new ForbiddenException("Not Permitted");
+//			}
+
+
+			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
 			{
-				// the staff member doesnt have persmission to post Item Category
 				throw new ForbiddenException("Not Permitted");
 			}
+			else if (staff.isPermitUpdateItems())
+			{
+
+			}
+			else
+			{
+				throw new ForbiddenException("Not Permitted");
+			}
+
 		}
 
 		int rowCountSum = 0;
@@ -279,7 +355,9 @@ public class ItemResource {
 
 		return null;
 	}
-	
+
+
+
 	
 	@DELETE
 	@Path("/{ItemID}")
@@ -292,15 +370,40 @@ public class ItemResource {
 
 			// checking permission
 			Staff staff = (Staff) Globals.accountApproved;
-			if (!staff.isCreateUpdateItems())
+
+//			if (!staff.isCreateUpdateItems())
+//			{
+//				// the staff member doesnt have persmission to post Item Category
+//				throw new ForbiddenException("Not Permitted");
+//			}
+
+
+			if(staff.isPermitDeleteOnlyItemsAddedBySelf())
 			{
-				// the staff member doesnt have persmission to post Item Category
+				if(Globals.staffItemDAO.checkStaffItem(itemID,staff.getUserID())==null)
+				{
+					throw new ForbiddenException("Not Permitted");
+				}
+			}
+			else if (staff.isPermitDeleteItems())
+			{
+
+			}
+			else
+			{
 				throw new ForbiddenException("Not Permitted");
 			}
+
+
 		}
+
+
 
 		Item item = itemDAO.getItemImageURL(itemID);
 		int rowCount = itemDAO.deleteItem(itemID);
+
+
+
 
 
 		if(item!=null && rowCount>=1)
@@ -309,7 +412,6 @@ public class ItemResource {
 			System.out.println("Image FIle : " + item.getItemImageURL());
 			deleteImageFileInternal(item.getItemImageURL());
 		}
-		
 		
 		if(rowCount>=1)
 		{
@@ -430,7 +532,7 @@ public class ItemResource {
 			// checking permission
 			Staff staff = (Staff) Globals.accountApproved;
 
-			if (!staff.isCreateUpdateItems())
+			if (!staff.isPermitCreateItems())
 			{
 				// the staff member doesnt have persmission to post Item Category
 
@@ -444,7 +546,17 @@ public class ItemResource {
 			item.setItemImageURL(saveNewImage(item.getRt_gidb_service_url(),item.getItemImageURL()));
 
 			int rowCountTemp = 0;
-			rowCountTemp = itemDAO.saveItemRowCount(item);
+
+			if(Globals.accountApproved instanceof Admin)
+			{
+				rowCountTemp = itemDAO.saveItemRowCount(item);
+			}
+			else if(Globals.accountApproved instanceof Staff)
+			{
+				rowCountTemp = itemDAO.saveItemForStaff(item,((Staff) Globals.accountApproved).getUserID(),true);
+			}
+
+
 			rowCountSum = rowCountSum + rowCountTemp;
 
 			if(rowCountTemp==0)
@@ -620,16 +732,18 @@ public class ItemResource {
 	) throws Exception
 	{
 
-		if(Globals.accountApproved instanceof Staff)
-		{
-			// checking permission
-			Staff staff = (Staff) Globals.accountApproved;
-			if (!staff.isCreateUpdateItems())
-			{
-				// the staff member doesnt have persmission to post Item Category
-				throw new ForbiddenException("Not Permitted");
-			}
-		}
+//		if(Globals.accountApproved instanceof Staff)
+//		{
+//			// checking permission
+//			Staff staff = (Staff) Globals.accountApproved;
+//			if (!(staff.isPermitCreateItems() ||
+//					staff.isPermitUpdateItems() ||
+//					staff.isPermitUpdateOnlyItemsAddedBySelf()))
+//			{
+//				// the staff member doesnt have persmission to post Item Category
+//				throw new ForbiddenException("Not Permitted");
+//			}
+//		}
 
 
 		if(previousImageName!=null)
@@ -748,15 +862,21 @@ public class ItemResource {
 	public Response deleteImageFile(@PathParam("name")String fileName)
 	{
 
-		if(Globals.accountApproved instanceof Staff) {
-			// checking permission
-			Staff staff = (Staff) Globals.accountApproved;
-			if (!staff.isCreateUpdateItems())
-			{
-				// the staff member doesnt have persmission to post Item Category
-				throw new ForbiddenException("Not Permitted");
-			}
-		}
+
+//		if(Globals.accountApproved instanceof Staff) {
+//			// checking permission
+//			Staff staff = (Staff) Globals.accountApproved;
+//			if (!(staff.isPermitCreateItems() ||
+//					staff.isPermitUpdateItems() ||
+//					staff.isPermitUpdateOnlyItemsAddedBySelf() ||
+//					staff.isPermitDeleteItems() ||
+//					staff.isPermitDeleteOnlyItemsAddedBySelf()
+//			))
+//			{
+//				// the staff member doesnt have persmission to post Item Category
+//				throw new ForbiddenException("Not Permitted");
+//			}
+//		}
 
 
 		boolean deleteStatus = false;

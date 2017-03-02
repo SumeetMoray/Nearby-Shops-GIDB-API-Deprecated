@@ -2,8 +2,9 @@ package org.nearbyshops.gidb.DAOsPrepared;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.nearbyshops.gidb.Globals.Globals;
-import org.nearbyshops.gidb.Model.Item;
 import org.nearbyshops.gidb.Model.ItemCategory;
+import org.nearbyshops.gidb.ModelStaffTracking.StaffItem;
+import org.nearbyshops.gidb.ModelStaffTracking.StaffItemCategory;
 import org.nearbyshops.gidb.ModelEndpoints.ItemCategoryEndPoint;
 
 import java.sql.*;
@@ -111,6 +112,160 @@ public class ItemCategoryDAO {
 		
 		return idOfInsertedRow;
 	}
+
+
+
+
+
+
+	public int saveItemCatForStaff(ItemCategory itemCategory, int staffID, boolean getRowCount)
+	{
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		PreparedStatement statementUpdateStaffItemCat = null;
+		int idOfInsertedRow = 0;
+		int rowCountItemCat = 0;
+
+
+
+		String insertItemCategory = "";
+		insertItemCategory = "INSERT INTO "
+				+ ItemCategory.TABLE_NAME
+				+ "("
+				+ ItemCategory.ITEM_CATEGORY_NAME + ","
+				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION + ","
+				+ ItemCategory.PARENT_CATEGORY_ID + ","
+
+				+ ItemCategory.IMAGE_PATH + ","
+				+ ItemCategory.CATEGORY_ORDER + ","
+				+ ItemCategory.ITEM_CATEGORY_DESCRIPTION_SHORT + ","
+				+ ItemCategory.IS_ABSTRACT + ","
+
+				+ ItemCategory.IS_LEAF_NODE
+				+ ") VALUES(?,?,? ,?,?,?,? ,?)";
+
+
+
+		String insertStaffItem = "INSERT INTO "
+				+ StaffItemCategory.TABLE_NAME
+				+ "("
+				+ StaffItemCategory.ITEM_CATEGORY_ID + ","
+				+ StaffItem.STAFF_ID + ""
+				+ ") VALUES(?,?)";
+
+
+
+
+		try {
+
+			connection = dataSource.getConnection();
+			connection.setAutoCommit(false);
+
+
+			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
+			int i = 0;
+			statement.setString(++i,itemCategory.getCategoryName());
+			statement.setString(++i,itemCategory.getCategoryDescription());
+			statement.setInt(++i,itemCategory.getParentCategoryID());
+
+			statement.setString(++i,itemCategory.getImagePath());
+			statement.setObject(++i,itemCategory.getCategoryOrder());
+			statement.setString(++i,itemCategory.getDescriptionShort());
+			statement.setBoolean(++i,itemCategory.getisAbstractNode());
+			statement.setBoolean(++i,itemCategory.getIsLeafNode());
+
+
+			rowCountItemCat = statement.executeUpdate();
+
+			ResultSet rs = statement.getGeneratedKeys();
+
+			if(rs.next())
+			{
+				idOfInsertedRow = rs.getInt(1);
+			}
+
+
+
+			statementUpdateStaffItemCat = connection.prepareStatement(insertStaffItem,PreparedStatement.RETURN_GENERATED_KEYS);
+			int j = 0;
+			statementUpdateStaffItemCat.setObject(++j,idOfInsertedRow);
+			statementUpdateStaffItemCat.setObject(++j,staffID);
+
+			rowCountItemCat = statementUpdateStaffItemCat.executeUpdate();
+
+
+
+			connection.commit();
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			if (connection != null) {
+				try {
+
+					idOfInsertedRow = -1;
+					rowCountItemCat = 0;
+
+					connection.rollback();
+
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+		}
+		finally
+		{
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			if(statementUpdateStaffItemCat!=null)
+			{
+				try {
+					statementUpdateStaffItemCat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+
+			try {
+
+				if(connection!=null)
+				{connection.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
+
+
+		if(getRowCount)
+		{
+			return rowCountItemCat;
+		}
+		else
+		{
+			return idOfInsertedRow;
+		}
+	}
+
+
+
+
 
 
 

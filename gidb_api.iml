@@ -29,6 +29,13 @@
     <orderEntry type="library" name="Maven: org.glassfish.jersey.media:jersey-media-jaxb:2.25" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish.jersey.containers:jersey-container-jetty-http:2.26-b02" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.2.14.v20151106" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.2.14.v20151106" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.2.14.v20151106" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.2.14.v20151106" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:9.2.14.v20151106" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4-1200-jdbc41" level="project" />

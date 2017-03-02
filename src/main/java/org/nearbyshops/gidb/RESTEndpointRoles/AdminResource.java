@@ -22,7 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 
-@Path("/v1/Admin")
+@Path("/api/v1/Admin")
 public class AdminResource {
 
 

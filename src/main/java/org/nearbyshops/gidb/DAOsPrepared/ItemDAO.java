@@ -3,10 +3,9 @@ package org.nearbyshops.gidb.DAOsPrepared;
 import com.zaxxer.hikari.HikariDataSource;
 import org.nearbyshops.gidb.Globals.Globals;
 import org.nearbyshops.gidb.Model.Item;
-import org.nearbyshops.gidb.ModelEndpoints.ItemEndPoint;
+import org.nearbyshops.gidb.ModelStaffTracking.StaffItem;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,7 +28,7 @@ public class ItemDAO {
 		
 		Connection connection = null;
 		PreparedStatement statement = null;
-		int idOfInsertedRow = 0;
+		int idOfInsertedRow = -1;
 
 		String insertItemCategory = "INSERT INTO " 
 				+ Item.TABLE_NAME
@@ -100,6 +99,146 @@ public class ItemDAO {
 		return idOfInsertedRow;
 		
 	}
+
+
+
+	public int saveItemForStaff(Item item, int staffID, boolean getRowCount)
+	{
+
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		PreparedStatement statementUpdateStaffItem = null;
+		int idOfInsertedRow = 0;
+		int rowCountItems = 0;
+		int rowCountStaffItem = 0;
+
+		String insertItemCategory = "INSERT INTO "
+				+ Item.TABLE_NAME
+				+ "("
+				+ Item.ITEM_NAME + ","
+				+ Item.ITEM_DESC + ","
+				+ Item.ITEM_IMAGE_URL + ","
+
+				+ Item.ITEM_CATEGORY_ID + ","
+				+ Item.QUANTITY_UNIT + ","
+				+ Item.ITEM_DESCRIPTION_LONG
+
+				+ ") VALUES(?,?,? ,?,?,?)";
+
+
+		String insertStaffItem = "INSERT INTO "
+				+ StaffItem.TABLE_NAME
+				+ "("
+				+ StaffItem.ITEM_ID + ","
+				+ StaffItem.STAFF_ID + ""
+				+ ") VALUES(?,?)";
+
+
+		try {
+
+			connection = dataSource.getConnection();
+			connection.setAutoCommit(false);
+
+			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
+			int i = 0;
+			statement.setString(++i,item.getItemName());
+			statement.setString(++i,item.getItemDescription());
+			statement.setString(++i,item.getItemImageURL());
+
+			statement.setInt(++i,item.getItemCategoryID());
+			statement.setString(++i,item.getQuantityUnit());
+			statement.setString(++i,item.getItemDescriptionLong());
+
+
+			rowCountItems = statement.executeUpdate();
+
+			ResultSet rs = statement.getGeneratedKeys();
+
+			if(rs.next())
+			{
+				idOfInsertedRow = rs.getInt(1);
+			}
+
+
+
+			statementUpdateStaffItem = connection.prepareStatement(insertStaffItem,PreparedStatement.RETURN_GENERATED_KEYS);
+			int j = 0;
+			statementUpdateStaffItem.setObject(++j,idOfInsertedRow);
+			statementUpdateStaffItem.setObject(++j,staffID);
+
+			rowCountStaffItem = statementUpdateStaffItem.executeUpdate();
+
+
+
+
+			connection.commit();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			if (connection != null) {
+				try {
+
+					idOfInsertedRow = -1;
+					rowCountItems = 0;
+					rowCountStaffItem = 0;
+
+					connection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+		}
+
+		finally
+		{
+
+			try {
+
+				if(statement!=null)
+				{statement.close();}
+
+			}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if(statementUpdateStaffItem!=null)
+			{
+				try {
+					statementUpdateStaffItem.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+
+				if(connection!=null)
+				{connection.close();}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
+		if(getRowCount)
+		{
+			return rowCountItems;
+		}
+		else
+		{
+			return idOfInsertedRow;
+		}
+
+	}
+
+
 
 
 	public int saveItemRowCount(Item item)
@@ -559,6 +698,7 @@ public class ItemDAO {
 
 		return rowCountDeleted;
 	}
+
 
 
 	public Item getItemImageURL(

@@ -1,23 +1,30 @@
 package org.nearbyshops.gidb;
 
+//import org.glassfish.grizzly.http.server.HttpServer;
+//import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+//import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+//import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.nearbyshops.gidb.Globals.Globals;
-import org.nearbyshops.gidb.Model.Item;
-import org.nearbyshops.gidb.Model.ItemCategory;
+import org.nearbyshops.gidb.Model.*;
 import org.nearbyshops.gidb.ModelRoles.Admin;
 import org.nearbyshops.gidb.ModelRoles.Staff;
 import org.nearbyshops.gidb.ModelRoles.Usernames;
+import org.nearbyshops.gidb.ModelStaffTracking.StaffItem;
+import org.nearbyshops.gidb.ModelStaffTracking.StaffItemCategory;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 /**
  * Main class.
@@ -28,7 +35,8 @@ public class Main {
 //    public static final String BASE_URI = "http://0.0.0.0:6000/api/";
 
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://0.0.0.0:5100/api/";
+    public static final String BASE_URI = "https://0.0.0.0:5100/api/";
+    public static String BASE_URI_TWO = "http://0.0.0.0:";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -41,8 +49,140 @@ public class Main {
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+
+
+
+        SslContextFactory sslContextFactory = new SslContextFactory(true);
+
+
+        String keyStorePath = "";
+        String keyStorePassword = "";
+        String keyPassword = "";
+        String port = "";
+
+
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property value and print it out
+            keyStorePath = prop.getProperty("keystorepath");
+            keyStorePassword = prop.getProperty("keysorepassword");
+            keyPassword = prop.getProperty("keypassword");
+            port = prop.getProperty("port");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        sslContextFactory.setKeyStorePath(keyStorePath);
+        sslContextFactory.setKeyStorePassword(keyStorePassword);
+//        sslContextFactory.set
+        BASE_URI_TWO = BASE_URI_TWO + port;
+
+        System.out.println("Keystore Path : " + keyStorePath + "\nKeystore password : " + keyStorePassword +
+        "\nPath : " + port);
+
+//        SSLEngineConfigurator sslEngineConfigurator = new SSLEngineConfigurator(sslContextFactory.getSslContext());
+
+        SSLContextConfigurator sslContext = new SSLContextConfigurator();
+        sslContext.setKeyStoreFile(keyStorePath);
+        sslContext.setKeyStorePass(keyStorePassword);
+        sslContext.setKeyPass(keyPassword);
+
+//        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI_TWO),rc,true,new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false));
+
+
+            return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI_TWO),rc);
+
+//        return JettyHttpContainerFactory.createServer(URI.create(BASE_URI_TWO),sslContextFactory,rc);
+
     }
+
+
+
+//    static void createPropertiesFile()
+//    {
+//        Properties prop = new Properties();
+//        OutputStream output = null;
+//
+//        try {
+//
+//            output = new FileOutputStream("config.properties");
+//
+//            // set the properties value
+//            prop.setProperty("database", "localhost");
+//            prop.setProperty("dbuser", "mkyong");
+//            prop.setProperty("dbpassword", "password");
+//
+//            // save properties to project root folder
+//            prop.store(output, null);
+//
+//        } catch (IOException io) {
+//            io.printStackTrace();
+//        } finally {
+//            if (output != null) {
+//                try {
+//                    output.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//
+//    }
+
+
+
+    static void readPropertiesFile()
+    {
+
+    }
+
+//    private SSLEngineConfigurator createSSLConfig(boolean isServer)
+//            throws Exception {
+//        final SSLContextConfigurator sslContextConfigurator = new SSLContextConfigurator();
+//        // override system properties
+//        final File cacerts = getStoreFile("server truststore",
+//                "truststore_server.jks");
+//        if (cacerts != null) {
+//            sslContextConfigurator.setTrustStoreFile(cacerts.getAbsolutePath());
+//            sslContextConfigurator.setTrustStorePass(TRUSTSTORE_PASSWORD);
+//        }
+//
+//        // override system properties
+//        final File keystore = getStoreFile("server keystore", "keystore_server.jks");
+//        if (keystore != null) {
+//            sslContextConfigurator.setKeyStoreFile(keystore.getAbsolutePath());
+//            sslContextConfigurator.setKeyStorePass(TRUSTSTORE_PASSWORD);
+//        }
+//
+//        //
+//        boolean clientMode = false;
+//        // force client Authentication ...
+////        boolean needClientAuth = settings.isNeedClientAuth();
+////        boolean wantClientAuth = settings.isWantClientAuth();
+//        SSLEngineConfigurator result = new SSLEngineConfigurator(
+//                sslContextConfigurator.createSSLContext(), clientMode, needClientAuth,
+//                wantClientAuth);
+//        return result;
+//    }
 
     /**
      * Main method.
@@ -51,22 +191,21 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
 
+//        createPropertiesFile();
         createDB();
         createTables();
+        upgradeTables();
 
+//        final HttpServer server = startServer();
 
-        final HttpServer server = startServer();
+        startServer();
+
 
 
 //        System.out.println(String.format("Jersey app started with WADL available at "
 //                + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
 //        System.in.read();
 //        server.stop();
-
-
-
-
-
     }
 
 
@@ -132,6 +271,62 @@ public class Main {
 
 
 
+    private static void upgradeTables()
+    {
+
+        Connection connection = null;
+        Statement statement = null;
+
+        try {
+
+            connection = DriverManager.getConnection(JDBCContract.CURRENT_CONNECTION_URL
+                    ,JDBCContract.CURRENT_USERNAME
+                    ,JDBCContract.CURRENT_PASSWORD);
+
+            statement = connection.createStatement();
+
+            statement.executeUpdate(Staff.upgradeTableSchema);
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        finally{
+
+
+            // close the connection and statement accountApproved
+
+            if(statement !=null)
+            {
+
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+
+
+            if(connection!=null)
+            {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+
+
 
 
 
@@ -156,7 +351,7 @@ public class Main {
 
 
 //            statement.executeUpdate(ItemCategory.createTableItemCategoryPostgres);
-//            statement.executeUpdate(Item.createTableItemPostgres);
+//            statement.executeUpdate(Item.createTableItemImagesPostgres);
 
             // Create Table Roles
             statement.executeUpdate(Usernames.createTableUsernamesPostgres);
@@ -166,6 +361,11 @@ public class Main {
             // Create Table Item Cat and Items
             statement.executeUpdate(ItemCategory.createTableItemCategoryPostgres);
             statement.executeUpdate(Item.createTableItemPostgres);
+
+            statement.executeUpdate(ItemImage.createTableItemImagesPostgres);
+
+            statement.executeUpdate(StaffItem.createTableStaffItemPostgres);
+            statement.executeUpdate(StaffItemCategory.createTableStaffItemPostgres);
 
 
             // create table service configuration

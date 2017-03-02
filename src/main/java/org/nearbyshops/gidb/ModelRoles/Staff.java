@@ -34,16 +34,27 @@ public class Staff {
     public static final String TIMESTAMP_CREATED = "TIMESTAMP_CREATED";
 
     // permissions
-    public static final String CREATE_UPDATE_ITEM_CATEGORY = "CREATE_UPDATE_ITEM_CATEGORY";
-    public static final String CREATE_UPDATE_ITEMS = "CREATE_UPDATE_ITEMS";
+//    public static final String CREATE_UPDATE_ITEM_CATEGORY = "CREATE_UPDATE_ITEM_CATEGORY";
+//    public static final String CREATE_UPDATE_ITEMS = "CREATE_UPDATE_ITEMS";
+
+    public static final String CREATE_ITEM_CATEGORY = "CREATE_ITEM_CATEGORY";
+    public static final String UPDATE_ITEM_CATEGORY = "UPDATE_ITEM_CATEGORY";
+    public static final String UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF = "UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF";
+    public static final String DELETE_ITEM_CATEGORY = "DELETE_ITEM_CATEGORY";
+    public static final String DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF = "DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF";
+
+
+    public static final String CREATE_ITEM = "CREATE_ITEM";
+    public static final String UPDATE_ITEM = "UPDATE_ITEM";
+    public static final String UPDATE_ONLY_ITEM_ADDED_BY_SELF = "UPDATE_ONLY_ITEM_ADDED_BY_SELF";
+    public static final String DELETE_ITEM = "DELETE_ITEM";
+    public static final String DELETE_ONLY_ITEM_ADDED_BY_SELF = "DELETE_ONLY_ITEM_ADDED_BY_SELF";
+
+
+
 
 //    public static final String APPROVE_ITEM_CATEGORY_SUBMISSIONS = "APPROVE_ITEM_CATEGORY_SUBMISSIONS";
 //    public static final String APPROVE_ITEM_SUBMISSIONS = "APPROVE_ITEM_SUBMISSIONS";
-
-//    public static final String APPROVE_SHOP_ADMIN_ACCOUNTS = "APPROVE_SHOP_ADMIN_ACCOUNTS";
-//    public static final String APPROVE_SHOPS = "APPROVE_SHOPS";
-//    public static final String APPROVE_END_USER_ACCOUNTS = "APPROVE_END_USER_ACCOUNTS";
-
 
 
 
@@ -73,16 +84,42 @@ public class Staff {
             + " " + Staff.GOVERNMENT_ID_NUMBER + " text,"
             + " " + Staff.TIMESTAMP_CREATED + " timestamp with time zone NOT NULL DEFAULT now(),"
 
-            + " " + Staff.CREATE_UPDATE_ITEM_CATEGORY + " boolean ,"
-            + " " + Staff.CREATE_UPDATE_ITEMS + " boolean ,"
-//            + " " + Staff.APPROVE_SHOP_ADMIN_ACCOUNTS + " boolean ,"
-//            + " " + Staff.APPROVE_SHOPS + " boolean ,"
-//            + " " + Staff.APPROVE_END_USER_ACCOUNTS + " boolean ,"
+//            + " " + Staff.CREATE_UPDATE_ITEM_CATEGORY + " boolean ,"
+//            + " " + Staff.CREATE_UPDATE_ITEMS + " boolean ,"
+
+            + " " + Staff.CREATE_ITEM_CATEGORY + " boolean ,"
+            + " " + Staff.UPDATE_ITEM_CATEGORY + " boolean ,"
+            + " " + Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean ,"
+            + " " + Staff.DELETE_ITEM_CATEGORY + " boolean ,"
+            + " " + Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean ,"
+
+            + " " + Staff.CREATE_ITEM + " boolean ,"
+            + " " + Staff.UPDATE_ITEM + " boolean ,"
+            + " " + Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + " boolean ,"
+            + " " + Staff.DELETE_ITEM + " boolean ,"
+            + " " + Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + " boolean ,"
+
             + " FOREIGN KEY(" + Staff.STAFF_ID +") REFERENCES " + Usernames.TABLE_NAME + "(" + Usernames.USER_ID + ")"
             + ")";
 
 
-    
+
+    public static final String upgradeTableSchema =
+            "ALTER TABLE IF EXISTS " + Staff.TABLE_NAME
+                    + " ADD COLUMN " + Staff.CREATE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN " + Staff.UPDATE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN " + Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
+                    + " ADD COLUMN " + Staff.DELETE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN " + Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
+
+                    + " ADD COLUMN " + Staff.CREATE_ITEM + " boolean,"
+                    + " ADD COLUMN " + Staff.UPDATE_ITEM + " boolean,"
+                    + " ADD COLUMN " + Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + " boolean,"
+                    + " ADD COLUMN " + Staff.DELETE_ITEM + " boolean,"
+                    + " ADD COLUMN " + Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + " boolean";
+
+
+
     // Instance Variables
     private int userID;
 
@@ -104,17 +141,111 @@ public class Staff {
     private Timestamp timestampCreated;
 
     // permission fields
-    private boolean createUpdateItemCategory;
-    private boolean createUpdateItems;
+//    private boolean createUpdateItemCategory;
+//    private boolean createUpdateItems;
 
-//    private boolean approveShopAdminAccounts;
-//    private boolean approveShops;
-//    private boolean approveEndUserAccounts;
+    // permission fields
+
+    private boolean permitCreateItemCategories;
+    private boolean permitUpdateItemCategories;
+    private boolean permitUpdateOnlyItemCategoriesAddedBySelf;
+    private boolean permitDeleteItemCategories;
+    private boolean permitDeleteOnlyItemCategoriesAddedBySelf;
+
+
+    private boolean permitCreateItems;
+    private boolean permitUpdateItems;
+    private boolean permitUpdateOnlyItemsAddedBySelf;
+    private boolean permitDeleteItems;
+    private boolean permitDeleteOnlyItemsAddedBySelf;
+
+
+
 
 
 
     // Getter and Setters
 
+
+    public boolean isPermitCreateItemCategories() {
+        return permitCreateItemCategories;
+    }
+
+    public void setPermitCreateItemCategories(boolean permitCreateItemCategories) {
+        this.permitCreateItemCategories = permitCreateItemCategories;
+    }
+
+    public boolean isPermitUpdateItemCategories() {
+        return permitUpdateItemCategories;
+    }
+
+    public void setPermitUpdateItemCategories(boolean permitUpdateItemCategories) {
+        this.permitUpdateItemCategories = permitUpdateItemCategories;
+    }
+
+    public boolean isPermitUpdateOnlyItemCategoriesAddedBySelf() {
+        return permitUpdateOnlyItemCategoriesAddedBySelf;
+    }
+
+    public void setPermitUpdateOnlyItemCategoriesAddedBySelf(boolean permitUpdateOnlyItemCategoriesAddedBySelf) {
+        this.permitUpdateOnlyItemCategoriesAddedBySelf = permitUpdateOnlyItemCategoriesAddedBySelf;
+    }
+
+    public boolean isPermitDeleteItemCategories() {
+        return permitDeleteItemCategories;
+    }
+
+    public void setPermitDeleteItemCategories(boolean permitDeleteItemCategories) {
+        this.permitDeleteItemCategories = permitDeleteItemCategories;
+    }
+
+    public boolean isPermitDeleteOnlyItemCategoriesAddedBySelf() {
+        return permitDeleteOnlyItemCategoriesAddedBySelf;
+    }
+
+    public void setPermitDeleteOnlyItemCategoriesAddedBySelf(boolean permitDeleteOnlyItemCategoriesAddedBySelf) {
+        this.permitDeleteOnlyItemCategoriesAddedBySelf = permitDeleteOnlyItemCategoriesAddedBySelf;
+    }
+
+    public boolean isPermitCreateItems() {
+        return permitCreateItems;
+    }
+
+    public void setPermitCreateItems(boolean permitCreateItems) {
+        this.permitCreateItems = permitCreateItems;
+    }
+
+    public boolean isPermitUpdateItems() {
+        return permitUpdateItems;
+    }
+
+    public void setPermitUpdateItems(boolean permitUpdateItems) {
+        this.permitUpdateItems = permitUpdateItems;
+    }
+
+    public boolean isPermitUpdateOnlyItemsAddedBySelf() {
+        return permitUpdateOnlyItemsAddedBySelf;
+    }
+
+    public void setPermitUpdateOnlyItemsAddedBySelf(boolean permitUpdateOnlyItemsAddedBySelf) {
+        this.permitUpdateOnlyItemsAddedBySelf = permitUpdateOnlyItemsAddedBySelf;
+    }
+
+    public boolean isPermitDeleteItems() {
+        return permitDeleteItems;
+    }
+
+    public void setPermitDeleteItems(boolean permitDeleteItems) {
+        this.permitDeleteItems = permitDeleteItems;
+    }
+
+    public boolean isPermitDeleteOnlyItemsAddedBySelf() {
+        return permitDeleteOnlyItemsAddedBySelf;
+    }
+
+    public void setPermitDeleteOnlyItemsAddedBySelf(boolean permitDeleteOnlyItemsAddedBySelf) {
+        this.permitDeleteOnlyItemsAddedBySelf = permitDeleteOnlyItemsAddedBySelf;
+    }
 
     public boolean isAccountPrivate() {
         return accountPrivate;
@@ -122,22 +253,6 @@ public class Staff {
 
     public void setAccountPrivate(boolean accountPrivate) {
         this.accountPrivate = accountPrivate;
-    }
-
-    public boolean isCreateUpdateItemCategory() {
-        return createUpdateItemCategory;
-    }
-
-    public void setCreateUpdateItemCategory(boolean createUpdateItemCategory) {
-        this.createUpdateItemCategory = createUpdateItemCategory;
-    }
-
-    public boolean isCreateUpdateItems() {
-        return createUpdateItems;
-    }
-
-    public void setCreateUpdateItems(boolean createUpdateItems) {
-        this.createUpdateItems = createUpdateItems;
     }
 
 
