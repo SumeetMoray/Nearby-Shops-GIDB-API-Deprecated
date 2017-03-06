@@ -1,4 +1,4 @@
-package org.nearbyshops.gidb.DAOsPrepared;
+package org.nearbyshops.gidb.DAOPreparedStaffTracking;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.nearbyshops.gidb.Globals.Globals;

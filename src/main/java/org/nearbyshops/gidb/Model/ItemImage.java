@@ -28,7 +28,7 @@ public class ItemImage {
     public static final String createTableItemImagesPostgres = "CREATE TABLE IF NOT EXISTS "
             + ItemImage.TABLE_NAME + "("
             + " " + ItemImage.IMAGE_ID + " SERIAL PRIMARY KEY,"
-            + " " + ItemImage.ITEM_ID + " int NOT NULL,"
+            + " " + ItemImage.ITEM_ID + " int,"
             + " " + ItemImage.IMAGE_FILENAME + " text,"
             + " " + ItemImage.GIDB_IMAGE_ID + " int,"
             + " " + ItemImage.GIDB_SERVICE_URL + " text,"

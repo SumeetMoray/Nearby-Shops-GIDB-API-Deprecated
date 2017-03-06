@@ -11,6 +11,9 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.nearbyshops.gidb.Globals.Globals;
 import org.nearbyshops.gidb.Model.*;
+import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationItem;
+import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationName;
+import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationValue;
 import org.nearbyshops.gidb.ModelRoles.Admin;
 import org.nearbyshops.gidb.ModelRoles.Staff;
 import org.nearbyshops.gidb.ModelRoles.Usernames;
@@ -366,6 +369,14 @@ public class Main {
 
             statement.executeUpdate(StaffItem.createTableStaffItemPostgres);
             statement.executeUpdate(StaffItemCategory.createTableStaffItemPostgres);
+
+
+            statement.executeUpdate(ItemSpecificationName.createTableItemSpecNamePostgres);
+            statement.executeUpdate(ItemSpecificationValue.createTableItemSpecificationValuePostgres);
+            statement.executeUpdate(ItemSpecificationItem.createTableItemSpecificationItemPostgres);
+
+
+
 
 
             // create table service configuration

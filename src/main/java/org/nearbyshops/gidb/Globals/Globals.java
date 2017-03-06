@@ -4,10 +4,15 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
+import org.nearbyshops.gidb.DAOPreparedItemSpecification.*;
+import org.nearbyshops.gidb.DAOPreparedStaffTracking.StaffItemCatDAO;
+import org.nearbyshops.gidb.DAOPreparedStaffTracking.StaffItemDAO;
 import org.nearbyshops.gidb.DAOsPrepared.*;
 import org.nearbyshops.gidb.DAOsPreparedRoles.AdminDAOPrepared;
 import org.nearbyshops.gidb.DAOsPreparedRoles.StaffDAOPrepared;
 import org.nearbyshops.gidb.JDBCContract;
+import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationItem;
+import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationName;
 
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
@@ -26,6 +31,19 @@ public class Globals {
 	public static StaffItemCatDAO staffItemCatDAO = new StaffItemCatDAO();
 
 	public static ItemImagesDAO itemImagesDAO = new ItemImagesDAO();
+
+	// Item Specification DAO'
+
+	public static ItemSpecificationNameDAO itemSpecNameDAO = new ItemSpecificationNameDAO();
+	public static ItemSpecNameDAOOuterJoin itemSpecNameDAOOuterJoin = new ItemSpecNameDAOOuterJoin();
+
+	public static ItemSpecificationValueDAO itemSpecificationValueDAO = new ItemSpecificationValueDAO();
+	public static ItemSpecValueDAOJoinOuter itemSpecValueDAOJoinOuter = new ItemSpecValueDAOJoinOuter();
+
+	public static ItemSpecificationItemDAO itemSpecificationItemDAO = new ItemSpecificationItemDAO();
+
+
+
 
 
 //	public static ServiceConfigurationDAO serviceConfigurationDAO = new ServiceConfigurationDAO();

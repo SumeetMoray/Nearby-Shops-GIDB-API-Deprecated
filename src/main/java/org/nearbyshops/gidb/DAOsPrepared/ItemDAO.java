@@ -48,13 +48,13 @@ public class ItemDAO {
 			connection = dataSource.getConnection();
 			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
 
-			statement.setString(1,item.getItemName());
-			statement.setString(2,item.getItemDescription());
-			statement.setString(3,item.getItemImageURL());
-
-			statement.setInt(4,item.getItemCategoryID());
-			statement.setString(5,item.getQuantityUnit());
-			statement.setString(6,item.getItemDescriptionLong());
+			int i = 0;
+			statement.setString(++i,item.getItemName());
+			statement.setString(++i,item.getItemDescription());
+			statement.setString(++i,item.getItemImageURL());
+			statement.setInt(++i,item.getItemCategoryID());
+			statement.setString(++i,item.getQuantityUnit());
+			statement.setString(++i,item.getItemDescriptionLong());
 
 
 			idOfInsertedRow = statement.executeUpdate();
