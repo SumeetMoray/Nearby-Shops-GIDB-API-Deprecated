@@ -106,17 +106,17 @@ public class Staff {
 
     public static final String upgradeTableSchema =
             "ALTER TABLE IF EXISTS " + Staff.TABLE_NAME
-                    + " ADD COLUMN " + Staff.CREATE_ITEM_CATEGORY + " boolean,"
-                    + " ADD COLUMN " + Staff.UPDATE_ITEM_CATEGORY + " boolean,"
-                    + " ADD COLUMN " + Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
-                    + " ADD COLUMN " + Staff.DELETE_ITEM_CATEGORY + " boolean,"
-                    + " ADD COLUMN " + Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.CREATE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.UPDATE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.UPDATE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.DELETE_ITEM_CATEGORY + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.DELETE_ONLY_ITEM_CATEGORY_ADDED_BY_SELF + " boolean,"
 
-                    + " ADD COLUMN " + Staff.CREATE_ITEM + " boolean,"
-                    + " ADD COLUMN " + Staff.UPDATE_ITEM + " boolean,"
-                    + " ADD COLUMN " + Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + " boolean,"
-                    + " ADD COLUMN " + Staff.DELETE_ITEM + " boolean,"
-                    + " ADD COLUMN " + Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + " boolean";
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.CREATE_ITEM + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.UPDATE_ITEM + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.UPDATE_ONLY_ITEM_ADDED_BY_SELF + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.DELETE_ITEM + " boolean,"
+                    + " ADD COLUMN IF NOT EXISTS " + Staff.DELETE_ONLY_ITEM_ADDED_BY_SELF + " boolean";
 
 
 

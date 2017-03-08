@@ -16,7 +16,10 @@ public class ItemImage {
     public static final String IMAGE_FILENAME = "IMAGE_FILENAME";
     public static final String GIDB_IMAGE_ID = "GIDB_IMAGE_ID";
     public static final String GIDB_SERVICE_URL = "GIDB_SERVICE_URL";
+
     public static final String TIMESTAMP_CREATED = "TIMESTAMP_CREATED";
+    public static final String TIMESTAMP_UPDATED = "TIMESTAMP_UPDATED";
+
     public static final String CAPTION_TITLE = "CAPTION_TITLE";
     public static final String CAPTION = "CAPTION";
     public static final String IMAGE_COPYRIGHTS = "IMAGE_COPYRIGHTS";
@@ -26,19 +29,28 @@ public class ItemImage {
 
     // create table statement
     public static final String createTableItemImagesPostgres = "CREATE TABLE IF NOT EXISTS "
+
             + ItemImage.TABLE_NAME + "("
+
             + " " + ItemImage.IMAGE_ID + " SERIAL PRIMARY KEY,"
             + " " + ItemImage.ITEM_ID + " int,"
             + " " + ItemImage.IMAGE_FILENAME + " text,"
             + " " + ItemImage.GIDB_IMAGE_ID + " int,"
             + " " + ItemImage.GIDB_SERVICE_URL + " text,"
+
             + " " + ItemImage.TIMESTAMP_CREATED + " timestamp with time zone NOT NULL DEFAULT now(),"
+            + " " + ItemImage.TIMESTAMP_UPDATED + " timestamp with time zone,"
+
             + " " + ItemImage.CAPTION_TITLE + " text,"
             + " " + ItemImage.CAPTION + " text,"
             + " " + ItemImage.IMAGE_COPYRIGHTS + " text,"
             + " " + ItemImage.IMAGE_ORDER + " int,"
+
             + " FOREIGN KEY(" + ItemImage.ITEM_ID +") REFERENCES " + Item.TABLE_NAME + "(" + Item.ITEM_ID + ")"
             + ")";
+
+
+
 
 
 
@@ -49,12 +61,24 @@ public class ItemImage {
     private String imageFilename;
     private int gidbImageID;
     private String gidbServiceURL;
+
     private Timestamp timestampCreated;
+    private Timestamp timestampUpdated;
+
     private String captionTitle;
     private String caption;
     private String imageCopyrights;
     private int imageOrder;
 
+
+
+    public Timestamp getTimestampUpdated() {
+        return timestampUpdated;
+    }
+
+    public void setTimestampUpdated(Timestamp timestampUpdated) {
+        this.timestampUpdated = timestampUpdated;
+    }
 
     public int getImageOrder() {
         return imageOrder;

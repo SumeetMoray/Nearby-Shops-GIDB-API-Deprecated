@@ -62,7 +62,7 @@ public class ItemResource {
 		else if(Globals.accountApproved instanceof Admin)
 		{
 
-			idOfInsertedRow = itemDAO.saveItem(item);
+			idOfInsertedRow = itemDAO.saveItem(item,false);
 		}
 
 
@@ -290,71 +290,71 @@ public class ItemResource {
 
 
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@RolesAllowed({GlobalConstants.ROLE_ADMIN,GlobalConstants.ROLE_STAFF})
-	public Response updateItemBulk(List<Item> itemList)
-	{
-
-		if(Globals.accountApproved instanceof Staff) {
-
-			// checking permission
-			Staff staff = (Staff) Globals.accountApproved;
-
-//			if (!staff.isCreateUpdateItems())
+//	@PUT
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@RolesAllowed({GlobalConstants.ROLE_ADMIN,GlobalConstants.ROLE_STAFF})
+//	public Response updateItemBulk(List<Item> itemList)
+//	{
+//
+//		if(Globals.accountApproved instanceof Staff) {
+//
+//			// checking permission
+//			Staff staff = (Staff) Globals.accountApproved;
+//
+////			if (!staff.isCreateUpdateItems())
+////			{
+////				// the staff member doesnt have persmission to post Item Category
+////				throw new ForbiddenException("Not Permitted");
+////			}
+//
+//
+//			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
 //			{
-//				// the staff member doesnt have persmission to post Item Category
 //				throw new ForbiddenException("Not Permitted");
 //			}
-
-
-			if(staff.isPermitUpdateOnlyItemsAddedBySelf())
-			{
-				throw new ForbiddenException("Not Permitted");
-			}
-			else if (staff.isPermitUpdateItems())
-			{
-
-			}
-			else
-			{
-				throw new ForbiddenException("Not Permitted");
-			}
-
-		}
-
-		int rowCountSum = 0;
-
-//		for(Item item : itemList)
-//		{
-//			rowCountSum = rowCountSum + itemDAO.updateItem(item);
+//			else if (staff.isPermitUpdateItems())
+//			{
+//
+//			}
+//			else
+//			{
+//				throw new ForbiddenException("Not Permitted");
+//			}
+//
 //		}
-
-		rowCountSum = itemDAO.updateItemBulk(itemList);
-
-		if(rowCountSum ==  itemList.size())
-		{
-
-			return Response.status(Status.OK)
-					.entity(null)
-					.build();
-		}
-		else if( rowCountSum < itemList.size() && rowCountSum > 0)
-		{
-
-			return Response.status(Status.PARTIAL_CONTENT)
-					.entity(null)
-					.build();
-		}
-		else if(rowCountSum == 0 ) {
-
-			return Response.status(Status.NOT_MODIFIED)
-					.entity(null)
-					.build();
-		}
-
-		return null;
-	}
+//
+//		int rowCountSum = 0;
+//
+////		for(Item item : itemList)
+////		{
+////			rowCountSum = rowCountSum + itemDAO.updateItem(item);
+////		}
+//
+//		rowCountSum = itemDAO.updateItemBulk(itemList);
+//
+//		if(rowCountSum ==  itemList.size())
+//		{
+//
+//			return Response.status(Status.OK)
+//					.entity(null)
+//					.build();
+//		}
+//		else if( rowCountSum < itemList.size() && rowCountSum > 0)
+//		{
+//
+//			return Response.status(Status.PARTIAL_CONTENT)
+//					.entity(null)
+//					.build();
+//		}
+//		else if(rowCountSum == 0 ) {
+//
+//			return Response.status(Status.NOT_MODIFIED)
+//					.entity(null)
+//					.build();
+//		}
+//
+//		return null;
+//	}
 
 
 
@@ -549,7 +549,7 @@ public class ItemResource {
 
 			if(Globals.accountApproved instanceof Admin)
 			{
-				rowCountTemp = itemDAO.saveItemRowCount(item);
+				rowCountTemp = itemDAO.saveItem(item,true);
 			}
 			else if(Globals.accountApproved instanceof Staff)
 			{

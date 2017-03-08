@@ -8,10 +8,7 @@ import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationItem;
 import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationName;
 import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationValue;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +43,10 @@ public class ItemSpecificationValueDAO {
                 + ItemSpecificationValue.DESCRIPTION + ","
                 + ItemSpecificationValue.IMAGE_FILENAME + ","
                 + ItemSpecificationValue.GIDB_ID + ","
-                + ItemSpecificationValue.GIDB_SERVICE_URL + ""
-                + ") VALUES(?, ?,?,? ,?,?)";
+                + ItemSpecificationValue.GIDB_SERVICE_URL + ","
+
+                + ItemSpecificationValue.TIMESTAMP_UPDATED + ""
+                + ") VALUES(?, ?,?,? ,?,?,?)";
 
         try {
 
@@ -61,6 +60,8 @@ public class ItemSpecificationValueDAO {
             statement.setString(++i,itemSpecificationValue.getImageFilename());
             statement.setObject(++i,itemSpecificationValue.getGidbID());
             statement.setString(++i,itemSpecificationValue.getGidbServiceURL());
+
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 
             idOfInsertedRow = statement.executeUpdate();
 
@@ -119,7 +120,9 @@ public class ItemSpecificationValueDAO {
                 + ItemSpecificationValue.DESCRIPTION + "=?,"
                 + ItemSpecificationValue.IMAGE_FILENAME + "=?,"
                 + ItemSpecificationValue.GIDB_ID + "=?,"
-                + ItemSpecificationValue.GIDB_SERVICE_URL + "=?"
+                + ItemSpecificationValue.GIDB_SERVICE_URL + "=?,"
+
+                + ItemSpecificationValue.TIMESTAMP_UPDATED + "=?"
 
                 + " WHERE " + ItemSpecificationValue.ID + "=?";
 
@@ -143,6 +146,8 @@ public class ItemSpecificationValueDAO {
             statement.setString(++i,itemSpecificationValue.getImageFilename());
             statement.setObject(++i,itemSpecificationValue.getGidbID());
             statement.setString(++i,itemSpecificationValue.getGidbServiceURL());
+
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 
             statement.setObject(++i,itemSpecificationValue.getId());
 
@@ -562,18 +567,6 @@ public class ItemSpecificationValueDAO {
 
         return itemCount;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

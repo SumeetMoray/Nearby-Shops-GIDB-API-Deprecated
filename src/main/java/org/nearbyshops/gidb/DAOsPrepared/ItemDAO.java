@@ -21,27 +21,40 @@ public class ItemDAO {
 		super.finalize();
 	}
 		
-	
-	public int saveItem(Item item)
+
+
+
+	public int saveItem(Item item, boolean getRowCount)
 	{
 		
 		
 		Connection connection = null;
 		PreparedStatement statement = null;
 		int idOfInsertedRow = -1;
+		int rowCountItems = 0;
 
 		String insertItemCategory = "INSERT INTO " 
 				+ Item.TABLE_NAME
 				+ "("
 				+ Item.ITEM_NAME + ","
 				+ Item.ITEM_DESC + ","
+
 				+ Item.ITEM_IMAGE_URL + ","
-
 				+ Item.ITEM_CATEGORY_ID + ","
-				+ Item.QUANTITY_UNIT + ","
-				+ Item.ITEM_DESCRIPTION_LONG
 
-				+ ") VALUES(?,?,? ,?,?,?)";
+				+ Item.QUANTITY_UNIT + ","
+				+ Item.TIMESTAMP_UPDATED + ","
+				+ Item.ITEM_DESCRIPTION_LONG + ","
+
+				+ Item.LIST_PRICE + ","
+				+ Item.BARCODE + ","
+				+ Item.BARCODE_FORMAT + ","
+				+ Item.IMAGE_COPYRIGHTS + ","
+
+				+ Item.GIDB_ITEM_ID + ","
+				+ Item.GIDB_SERVICE_URL + ""
+
+				+ ") VALUES(?,? ,?,?, ?,?,?, ?,?,?,?, ?,?)";
 		
 		try {
 			
@@ -51,13 +64,25 @@ public class ItemDAO {
 			int i = 0;
 			statement.setString(++i,item.getItemName());
 			statement.setString(++i,item.getItemDescription());
+
 			statement.setString(++i,item.getItemImageURL());
 			statement.setInt(++i,item.getItemCategoryID());
+
 			statement.setString(++i,item.getQuantityUnit());
+			statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 			statement.setString(++i,item.getItemDescriptionLong());
 
+			statement.setFloat(++i,item.getListPrice());
+			statement.setString(++i,item.getBarcode());
+			statement.setString(++i,item.getBarcodeFormat());
+			statement.setString(++i,item.getImageCopyrights());
 
-			idOfInsertedRow = statement.executeUpdate();
+			statement.setObject(++i,item.getGidbItemID());
+			statement.setString(++i,item.getGidbServiceURL());
+
+
+
+			rowCountItems = statement.executeUpdate();
 			
 			ResultSet rs = statement.getGeneratedKeys();
 			
@@ -95,9 +120,15 @@ public class ItemDAO {
 				e.printStackTrace();
 			}
 		}
-		
-		return idOfInsertedRow;
-		
+
+		if(getRowCount)
+		{
+			return rowCountItems;
+		}
+		else
+		{
+			return idOfInsertedRow;
+		}
 	}
 
 
@@ -113,18 +144,29 @@ public class ItemDAO {
 		int rowCountItems = 0;
 		int rowCountStaffItem = 0;
 
+
 		String insertItemCategory = "INSERT INTO "
 				+ Item.TABLE_NAME
 				+ "("
 				+ Item.ITEM_NAME + ","
 				+ Item.ITEM_DESC + ","
+
 				+ Item.ITEM_IMAGE_URL + ","
-
 				+ Item.ITEM_CATEGORY_ID + ","
-				+ Item.QUANTITY_UNIT + ","
-				+ Item.ITEM_DESCRIPTION_LONG
 
-				+ ") VALUES(?,?,? ,?,?,?)";
+				+ Item.QUANTITY_UNIT + ","
+				+ Item.TIMESTAMP_UPDATED + ","
+				+ Item.ITEM_DESCRIPTION_LONG + ","
+
+				+ Item.LIST_PRICE + ","
+				+ Item.BARCODE + ","
+				+ Item.BARCODE_FORMAT + ","
+				+ Item.IMAGE_COPYRIGHTS + ","
+
+				+ Item.GIDB_ITEM_ID + ","
+				+ Item.GIDB_SERVICE_URL + ""
+
+				+ ") VALUES(?,? ,?,?, ?,?,?, ?,?,?,?, ?,?)";
 
 
 		String insertStaffItem = "INSERT INTO "
@@ -142,13 +184,24 @@ public class ItemDAO {
 
 			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
 			int i = 0;
+
 			statement.setString(++i,item.getItemName());
 			statement.setString(++i,item.getItemDescription());
-			statement.setString(++i,item.getItemImageURL());
 
+			statement.setString(++i,item.getItemImageURL());
 			statement.setInt(++i,item.getItemCategoryID());
+
 			statement.setString(++i,item.getQuantityUnit());
+			statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 			statement.setString(++i,item.getItemDescriptionLong());
+
+			statement.setFloat(++i,item.getListPrice());
+			statement.setString(++i,item.getBarcode());
+			statement.setString(++i,item.getBarcodeFormat());
+			statement.setString(++i,item.getImageCopyrights());
+
+			statement.setObject(++i,item.getGidbItemID());
+			statement.setString(++i,item.getGidbServiceURL());
 
 
 			rowCountItems = statement.executeUpdate();
@@ -241,82 +294,82 @@ public class ItemDAO {
 
 
 
-	public int saveItemRowCount(Item item)
-	{
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		int idOfInsertedRow = 0;
-
-		String insertItemCategory = "INSERT INTO "
-				+ Item.TABLE_NAME
-				+ "("
-				+ Item.ITEM_NAME + ","
-				+ Item.ITEM_DESC + ","
-				+ Item.ITEM_IMAGE_URL + ","
-
-				+ Item.ITEM_CATEGORY_ID + ","
-				+ Item.QUANTITY_UNIT + ","
-				+ Item.ITEM_DESCRIPTION_LONG
-
-				+ ") VALUES(?,?,? ,?,?,?)";
-
-		try {
-
-			connection = dataSource.getConnection();
-			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
-
-			int i = 0;
-			statement.setString(++i,item.getItemName());
-			statement.setString(++i,item.getItemDescription());
-			statement.setString(++i,item.getItemImageURL());
-
-			statement.setInt(++i,item.getItemCategoryID());
-			statement.setString(++i,item.getQuantityUnit());
-			statement.setString(++i,item.getItemDescriptionLong());
-
-
-			idOfInsertedRow = statement.executeUpdate();
-
-//			ResultSet rs = statement.getGeneratedKeys();
+//	public int saveItemRowCount(Item item)
+//	{
 //
-//			if(rs.next())
-//			{
-//				idOfInsertedRow = rs.getInt(1);
+//		Connection connection = null;
+//		PreparedStatement statement = null;
+//		int idOfInsertedRow = 0;
+//
+//		String insertItemCategory = "INSERT INTO "
+//				+ Item.TABLE_NAME
+//				+ "("
+//				+ Item.ITEM_NAME + ","
+//				+ Item.ITEM_DESC + ","
+//				+ Item.ITEM_IMAGE_URL + ","
+//
+//				+ Item.ITEM_CATEGORY_ID + ","
+//				+ Item.QUANTITY_UNIT + ","
+//				+ Item.ITEM_DESCRIPTION_LONG
+//
+//				+ ") VALUES(?,?,? ,?,?,?)";
+//
+//		try {
+//
+//			connection = dataSource.getConnection();
+//			statement = connection.prepareStatement(insertItemCategory,PreparedStatement.RETURN_GENERATED_KEYS);
+//
+//			int i = 0;
+//			statement.setString(++i,item.getItemName());
+//			statement.setString(++i,item.getItemDescription());
+//			statement.setString(++i,item.getItemImageURL());
+//
+//			statement.setInt(++i,item.getItemCategoryID());
+//			statement.setString(++i,item.getQuantityUnit());
+//			statement.setString(++i,item.getItemDescriptionLong());
+//
+//
+//			idOfInsertedRow = statement.executeUpdate();
+//
+////			ResultSet rs = statement.getGeneratedKeys();
+////
+////			if(rs.next())
+////			{
+////				idOfInsertedRow = rs.getInt(1);
+////			}
+//
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		finally
+//		{
+//
+//			try {
+//
+//				if(statement!=null)
+//				{statement.close();}
+//
 //			}
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		finally
-		{
-
-			try {
-
-				if(statement!=null)
-				{statement.close();}
-
-			}
-			catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-
-				if(connection!=null)
-				{connection.close();}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return idOfInsertedRow;
-	}
+//			catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//			try {
+//
+//				if(connection!=null)
+//				{connection.close();}
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		return idOfInsertedRow;
+//	}
 
 
 
@@ -497,13 +550,24 @@ public class ItemDAO {
 
 				+ " SET "
 
-				+ " " + Item.ITEM_NAME + " = ?,"
-				+ " " + Item.ITEM_DESC + " = ?,"
-				+ " " + Item.ITEM_IMAGE_URL + " = ?,"
+				+ Item.ITEM_NAME + "=?,"
+				+ Item.ITEM_DESC + "=?,"
 
-				+ " " + Item.ITEM_CATEGORY_ID + " = ?,"
-				+ " " + Item.QUANTITY_UNIT + " = ?,"
-				+ " " + Item.ITEM_DESCRIPTION_LONG + " = ?"
+				+ Item.ITEM_IMAGE_URL + "=?,"
+				+ Item.ITEM_CATEGORY_ID + "=?,"
+
+				+ Item.QUANTITY_UNIT + "=?,"
+				+ Item.TIMESTAMP_UPDATED + "=?,"
+				+ Item.ITEM_DESCRIPTION_LONG + "=?,"
+
+				+ Item.LIST_PRICE + "=?,"
+				+ Item.BARCODE + "=?,"
+				+ Item.BARCODE_FORMAT + "=?,"
+				+ Item.IMAGE_COPYRIGHTS + "=?,"
+
+				+ Item.GIDB_ITEM_ID + "=?,"
+				+ Item.GIDB_SERVICE_URL + "=?"
+
 
 				+ " WHERE " + Item.ITEM_ID + " = ?";
 
@@ -518,14 +582,28 @@ public class ItemDAO {
 			connection = dataSource.getConnection();
 			statement = connection.prepareStatement(updateStatement);
 
-			statement.setString(1,item.getItemName());
-			statement.setString(2,item.getItemDescription());
-			statement.setString(3,item.getItemImageURL());
+			int i = 0;
+			statement.setString(++i,item.getItemName());
+			statement.setString(++i,item.getItemDescription());
 
-			statement.setInt(4,item.getItemCategoryID());
-			statement.setString(5,item.getQuantityUnit());
-			statement.setString(6,item.getItemDescriptionLong());
-			statement.setInt(7,item.getItemID());
+			statement.setString(++i,item.getItemImageURL());
+			statement.setInt(++i,item.getItemCategoryID());
+
+			statement.setString(++i,item.getQuantityUnit());
+			statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
+			statement.setString(++i,item.getItemDescriptionLong());
+
+			statement.setFloat(++i,item.getListPrice());
+			statement.setString(++i,item.getBarcode());
+			statement.setString(++i,item.getBarcodeFormat());
+			statement.setString(++i,item.getImageCopyrights());
+
+			statement.setObject(++i,item.getGidbItemID());
+			statement.setString(++i,item.getGidbServiceURL());
+
+			statement.setObject(++i,item.getItemID());
+
+
 
 			rowCountUpdated = statement.executeUpdate();
 			System.out.println("Total rows updated: " + rowCountUpdated);	
@@ -563,89 +641,89 @@ public class ItemDAO {
 
 
 
-	public int updateItemBulk(List<Item> itemList)
-	{
-
-		String updateStatement = "UPDATE " + Item.TABLE_NAME
-
-				+ " SET "
-
-				+ " " + Item.ITEM_NAME + " = ?,"
-				+ " " + Item.ITEM_DESC + " = ?,"
-				+ " " + Item.ITEM_IMAGE_URL + " = ?,"
-
-				+ " " + Item.ITEM_CATEGORY_ID + " = ?,"
-				+ " " + Item.QUANTITY_UNIT + " = ?,"
-				+ " " + Item.ITEM_DESCRIPTION_LONG + " = ?"
-
-				+ " WHERE " + Item.ITEM_ID + " = ?";
-
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-
-		int rowCountUpdated = 0;
-
-		try {
-
-			connection = dataSource.getConnection();
-			statement = connection.prepareStatement(updateStatement);
-
-
-			for(Item item : itemList)
-			{
-				statement.setString(1,item.getItemName());
-				statement.setString(2,item.getItemDescription());
-				statement.setString(3,item.getItemImageURL());
-
-				statement.setInt(4,item.getItemCategoryID());
-				statement.setString(5,item.getQuantityUnit());
-				statement.setString(6,item.getItemDescriptionLong());
-				statement.setInt(7,item.getItemID());
-
-				statement.addBatch();
-			}
-
-
-			int[] totalsArray = statement.executeBatch();
-
-			for(int i : totalsArray)
-			{
-				rowCountUpdated = rowCountUpdated + i;
-			}
-
-			System.out.println("Total rows updated: UPDATE BULK " + rowCountUpdated);
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally
-
-		{
-
-			try {
-
-				if(statement!=null)
-				{statement.close();}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-
-				if(connection!=null)
-				{connection.close();}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return rowCountUpdated;
-	}
+//	public int updateItemBulk(List<Item> itemList)
+//	{
+//
+//		String updateStatement = "UPDATE " + Item.TABLE_NAME
+//
+//				+ " SET "
+//
+//				+ " " + Item.ITEM_NAME + " = ?,"
+//				+ " " + Item.ITEM_DESC + " = ?,"
+//				+ " " + Item.ITEM_IMAGE_URL + " = ?,"
+//
+//				+ " " + Item.ITEM_CATEGORY_ID + " = ?,"
+//				+ " " + Item.QUANTITY_UNIT + " = ?,"
+//				+ " " + Item.ITEM_DESCRIPTION_LONG + " = ?"
+//
+//				+ " WHERE " + Item.ITEM_ID + " = ?";
+//
+//
+//		Connection connection = null;
+//		PreparedStatement statement = null;
+//
+//		int rowCountUpdated = 0;
+//
+//		try {
+//
+//			connection = dataSource.getConnection();
+//			statement = connection.prepareStatement(updateStatement);
+//
+//
+//			for(Item item : itemList)
+//			{
+//				statement.setString(1,item.getItemName());
+//				statement.setString(2,item.getItemDescription());
+//				statement.setString(3,item.getItemImageURL());
+//
+//				statement.setInt(4,item.getItemCategoryID());
+//				statement.setString(5,item.getQuantityUnit());
+//				statement.setString(6,item.getItemDescriptionLong());
+//				statement.setInt(7,item.getItemID());
+//
+//				statement.addBatch();
+//			}
+//
+//
+//			int[] totalsArray = statement.executeBatch();
+//
+//			for(int i : totalsArray)
+//			{
+//				rowCountUpdated = rowCountUpdated + i;
+//			}
+//
+//			System.out.println("Total rows updated: UPDATE BULK " + rowCountUpdated);
+//
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		finally
+//
+//		{
+//
+//			try {
+//
+//				if(statement!=null)
+//				{statement.close();}
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//			try {
+//
+//				if(connection!=null)
+//				{connection.close();}
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		return rowCountUpdated;
+//	}
 
 
 

@@ -45,9 +45,10 @@ public class ItemImagesDAO {
                 + ItemImage.CAPTION_TITLE + ","
                 + ItemImage.CAPTION + ","
                 + ItemImage.IMAGE_COPYRIGHTS + ","
-                + ItemImage.IMAGE_ORDER + ""
+                + ItemImage.IMAGE_ORDER + ","
+                + ItemImage.TIMESTAMP_UPDATED + ""
 
-                + ") VALUES(?,?,? ,?,?,? ,?,?)";
+                + ") VALUES(?,?,? ,?,?,? ,?,?,?)";
 
         try {
 
@@ -63,6 +64,8 @@ public class ItemImagesDAO {
             statement.setString(++i,itemImage.getCaption());
             statement.setString(++i,itemImage.getImageCopyrights());
             statement.setObject(++i,itemImage.getImageOrder());
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
+
 
             idOfInsertedRow = statement.executeUpdate();
 
@@ -110,6 +113,7 @@ public class ItemImagesDAO {
 
 
 
+
     public int updateItemImage(ItemImage itemImage)
     {
 
@@ -124,7 +128,8 @@ public class ItemImagesDAO {
                 + ItemImage.CAPTION_TITLE + "=?,"
                 + ItemImage.CAPTION + "=?,"
                 + ItemImage.IMAGE_COPYRIGHTS + "=?,"
-                + ItemImage.IMAGE_ORDER + "=?"
+                + ItemImage.IMAGE_ORDER + "=?,"
+                + ItemImage.TIMESTAMP_UPDATED + "=?"
 
                 + " WHERE " + ItemImage.IMAGE_ID + "=?";
 
@@ -150,6 +155,7 @@ public class ItemImagesDAO {
             statement.setString(++i,itemImage.getCaption());
             statement.setString(++i,itemImage.getImageCopyrights());
             statement.setObject(++i,itemImage.getImageOrder());
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 
             statement.setObject(++i,itemImage.getImageID());
 
@@ -263,10 +269,12 @@ public class ItemImagesDAO {
                 + ItemImage.TABLE_NAME + "." + ItemImage.GIDB_IMAGE_ID + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.GIDB_SERVICE_URL + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.TIMESTAMP_CREATED + ","
+                + ItemImage.TABLE_NAME + "." + ItemImage.TIMESTAMP_UPDATED + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.CAPTION_TITLE + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.CAPTION + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.IMAGE_COPYRIGHTS + ","
                 + ItemImage.TABLE_NAME + "." + ItemImage.IMAGE_ORDER + ""
+
 
                 + " FROM " + ItemImage.TABLE_NAME;
 
@@ -369,6 +377,7 @@ public class ItemImagesDAO {
                 itemImage.setGidbImageID(rs.getInt(ItemImage.GIDB_IMAGE_ID));
                 itemImage.setGidbServiceURL(rs.getString(ItemImage.GIDB_SERVICE_URL));
                 itemImage.setTimestampCreated(rs.getTimestamp(ItemImage.TIMESTAMP_CREATED));
+                itemImage.setTimestampUpdated(rs.getTimestamp(ItemImage.TIMESTAMP_UPDATED));
                 itemImage.setCaptionTitle(rs.getString(ItemImage.CAPTION_TITLE));
                 itemImage.setCaption(rs.getString(ItemImage.CAPTION));
                 itemImage.setImageCopyrights(rs.getString(ItemImage.IMAGE_COPYRIGHTS));
@@ -631,11 +640,6 @@ public class ItemImagesDAO {
 
         return itemImage;
     }
-
-
-
-
-
 
 
 }

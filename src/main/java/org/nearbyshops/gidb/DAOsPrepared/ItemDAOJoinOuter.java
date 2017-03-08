@@ -46,15 +46,21 @@ public class ItemDAOJoinOuter {
 		
 		
 		String queryJoin = "SELECT DISTINCT "
-				+ Item.TABLE_NAME + "." + Item.ITEM_CATEGORY_ID + ","
 				+ Item.TABLE_NAME + "." + Item.ITEM_ID + ","
-				+ Item.TABLE_NAME + "." + Item.ITEM_IMAGE_URL + ","
 				+ Item.TABLE_NAME + "." + Item.ITEM_NAME + ","
 				+ Item.TABLE_NAME + "." + Item.ITEM_DESC + ","
+				+ Item.TABLE_NAME + "." + Item.ITEM_IMAGE_URL + ","
+				+ Item.TABLE_NAME + "." + Item.ITEM_CATEGORY_ID + ","
 
 				+ Item.TABLE_NAME + "." + Item.QUANTITY_UNIT + ","
 				+ Item.TABLE_NAME + "." + Item.DATE_TIME_CREATED + ","
-				+ Item.TABLE_NAME + "." + Item.ITEM_DESCRIPTION_LONG + ""
+				+ Item.TABLE_NAME + "." + Item.TIMESTAMP_UPDATED + ","
+				+ Item.TABLE_NAME + "." + Item.ITEM_DESCRIPTION_LONG + ","
+
+				+ Item.TABLE_NAME + "." + Item.LIST_PRICE + ","
+				+ Item.TABLE_NAME + "." + Item.BARCODE + ","
+				+ Item.TABLE_NAME + "." + Item.BARCODE_FORMAT + ","
+				+ Item.TABLE_NAME + "." + Item.IMAGE_COPYRIGHTS + ""
 
 				+ " FROM " + Item.TABLE_NAME;
 
@@ -239,7 +245,14 @@ public class ItemDAOJoinOuter {
 
 				item.setItemDescriptionLong(rs.getString(Item.ITEM_DESCRIPTION_LONG));
 				item.setDateTimeCreated(rs.getTimestamp(Item.DATE_TIME_CREATED));
+				item.setTimestampUpdated(rs.getTimestamp(Item.TIMESTAMP_UPDATED));
+
 				item.setQuantityUnit(rs.getString(Item.QUANTITY_UNIT));
+
+				item.setListPrice(rs.getFloat(Item.LIST_PRICE));
+				item.setBarcode(rs.getString(Item.BARCODE));
+				item.setBarcodeFormat(rs.getString(Item.BARCODE_FORMAT));
+				item.setImageCopyrights(rs.getString(Item.IMAGE_COPYRIGHTS));
 
 				itemList.add(item);
 			}

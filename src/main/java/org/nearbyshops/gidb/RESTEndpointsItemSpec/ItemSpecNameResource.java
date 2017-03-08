@@ -160,9 +160,6 @@ public class ItemSpecNameResource {
         ItemSpecificationName itemSpecName = itemSpecNameDAOOuterJoin.getItemSpecNameGetFilename(itemSpecNameID);
 
 
-
-
-
 //        if(Globals.accountApproved instanceof Staff) {
 //
 //            // checking permission

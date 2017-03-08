@@ -10,10 +10,7 @@ import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationItem;
 import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationName;
 import org.nearbyshops.gidb.ModelItemSpecification.ItemSpecificationValue;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +49,10 @@ public class ItemSpecificationNameDAO {
                 + ItemSpecificationName.DESCRIPTION + ","
                 + ItemSpecificationName.IMAGE_FILENAME + ","
                 + ItemSpecificationName.GIDB_ID + ","
-                + ItemSpecificationName.GIDB_SERVICE_URL + ""
-                + ") VALUES(?,?,? ,?,?)";
+                + ItemSpecificationName.GIDB_SERVICE_URL + ","
+                + ItemSpecificationName.TIMESTAMP_UPDATED + ""
+
+                + ") VALUES(?,?,? ,?,?,?)";
 
         try {
 
@@ -66,6 +65,7 @@ public class ItemSpecificationNameDAO {
             statement.setString(++i,itemSpecificationName.getImageFilename());
             statement.setObject(++i,itemSpecificationName.getGidbID());
             statement.setString(++i,itemSpecificationName.getGidbServiceURL());
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 
             idOfInsertedRow = statement.executeUpdate();
 
@@ -125,7 +125,8 @@ public class ItemSpecificationNameDAO {
                 + ItemSpecificationName.DESCRIPTION + "=?,"
                 + ItemSpecificationName.IMAGE_FILENAME + "=?,"
                 + ItemSpecificationName.GIDB_ID + "=?,"
-                + ItemSpecificationName.GIDB_SERVICE_URL + "=?"
+                + ItemSpecificationName.GIDB_SERVICE_URL + "=?,"
+                + ItemSpecificationName.TIMESTAMP_UPDATED + "=?"
 
                 + " WHERE " + ItemSpecificationName.ID + "=?";
 
@@ -148,6 +149,8 @@ public class ItemSpecificationNameDAO {
             statement.setString(++i,itemSpecificationName.getImageFilename());
             statement.setObject(++i,itemSpecificationName.getGidbID());
             statement.setString(++i,itemSpecificationName.getGidbServiceURL());
+
+            statement.setTimestamp(++i,new Timestamp(System.currentTimeMillis()));
 
             statement.setObject(++i,itemSpecificationName.getId());
 

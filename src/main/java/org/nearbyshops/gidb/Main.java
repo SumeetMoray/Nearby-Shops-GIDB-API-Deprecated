@@ -289,6 +289,9 @@ public class Main {
             statement = connection.createStatement();
 
             statement.executeUpdate(Staff.upgradeTableSchema);
+            statement.executeUpdate(Item.upgradeTableSchema);
+
+
 
 
         } catch (SQLException e) {
